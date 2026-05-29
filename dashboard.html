@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>CheckMate Dashboard</title>
+
+  <!-- FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CHART JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+
+    :root {
+      --red:       #B8213A;
+      --red-dark:  #8C1A2C;
+      --red-light: #D94060;
+      --red-pale:  #F5E8EB;
+
+      --bg:        #F2EEEB;
+      --white:     #FFFFFF;
+      --text:      #1A1A1A;
+      --muted:     #6B6B6B;
+      --border:    #DDD5CF;
+
+      --chess-light: #EDE8E3;
+      --chess-dark:  rgba(184,33,58,0.08);
+
+      --sans:      'Poppins', sans-serif;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+        font-family: var(--sans);
+
+        background-image:
+            repeating-conic-gradient(
+            var(--chess-light) 0% 25%,
+            var(--chess-dark) 0% 50%
+            );
+
+        background-size: 150px 150px;
+        background-color: var(--bg);
+
+        color: var(--text);
+    }
+
+    .dashboard{
+      display:flex;
+      min-height:100vh;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar{
+      width:260px;
+      background:rgba(255,255,255,0.7);
+      backdrop-filter:blur(18px);
+
+      border-right:1px solid var(--border);
+
+      padding:32px 22px;
+
+      position:fixed;
+      height:100vh;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+
+      margin-bottom:50px;
+    }
+
+    .logo-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+
+      background:var(--red-pale);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      color:var(--red);
+      font-size:22px;
+      font-weight:700;
+    }
+
+    .logo h2{
+      font-size:22px;
+    }
+
+    .nav-links{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .nav-links a{
+      text-decoration:none;
+      color:var(--muted);
+
+      padding:14px 16px;
+      border-radius:16px;
+
+      transition:.3s;
+      font-weight:500;
+    }
+
+    .nav-links a:hover,
+    .nav-links .active{
+      background:var(--red);
+      color:white;
+      box-shadow:0 10px 30px rgba(184,33,58,0.18);
+    }
+
+    /* MAIN */
+
+    .main{
+      margin-left:260px;
+      flex:1;
+
+      padding:40px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      margin-bottom:35px;
+    }
+
+    .topbar h1{
+      font-size:34px;
+      margin-bottom:5px;
+    }
+
+    .topbar p{
+      color:var(--muted);
+    }
+
+    .user{
+      background:white;
+      padding:12px 18px;
+      border-radius:18px;
+      border:1px solid var(--border);
+
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .avatar{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      background:var(--red);
+    }
+
+    /* STATS */
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:22px;
+
+      margin-bottom:30px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.75);
+      backdrop-filter:blur(20px);
+
+      border:1px solid rgba(255,255,255,0.6);
+
+      border-radius:28px;
+
+      padding:24px;
+
+      box-shadow:
+      0 10px 40px rgba(0,0,0,0.05);
+
+      transition:.3s;
+    }
+
+    .card:hover{
+      transform:translateY(-4px);
+      border-color:rgba(184,33,58,0.3);
+    }
+
+    .card-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      margin-bottom:18px;
+    }
+
+    .card-icon{
+      width:52px;
+      height:52px;
+      border-radius:18px;
+
+      background:var(--red-pale);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      font-size:22px;
+    }
+
+    .card h3{
+      color:var(--muted);
+      font-size:14px;
+      font-weight:500;
+    }
+
+    .metric{
+      font-size:38px;
+      font-weight:700;
+    }
+
+    .metric-sub{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* CHARTS */
+
+    .charts{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:24px;
+
+      margin-bottom:30px;
+    }
+
+    .chart-card{
+      background:rgba(255,255,255,0.75);
+      backdrop-filter:blur(20px);
+
+      border-radius:28px;
+
+      padding:28px;
+
+      box-shadow:
+      0 10px 40px rgba(0,0,0,0.05);
+    }
+
+    .chart-card h2{
+      margin-bottom:25px;
+      font-size:22px;
+    }
+
+    /* TABLE */
+
+    .table-card{
+      background:rgba(255,255,255,0.75);
+      backdrop-filter:blur(20px);
+
+      border-radius:28px;
+
+      padding:28px;
+
+      box-shadow:
+      0 10px 40px rgba(0,0,0,0.05);
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    th{
+      text-align:left;
+      padding-bottom:16px;
+
+      color:var(--muted);
+      font-size:14px;
+      font-weight:500;
+    }
+
+    td{
+      padding:18px 0;
+      border-top:1px solid var(--border);
+    }
+
+    .status{
+      padding:8px 14px;
+      border-radius:999px;
+
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .verified{
+      background:#e7f7ee;
+      color:#0f8a43;
+    }
+
+    .warning{
+      background:#fff4dd;
+      color:#b7791f;
+    }
+
+    .danger{
+      background:#ffe5e8;
+      color:#b42339;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:1000px){
+
+      .charts{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+    @media(max-width:850px){
+
+      .sidebar{
+        display:none;
+      }
+
+      .main{
+        margin-left:0;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      <div class="logo-icon">♟</div>
+      <h2>CheckMate</h2>
+    </div>
+
+    <div class="nav-links">
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Analytics</a>
+      <a href="#">Verificaciones</a>
+      <a href="#">Alertas</a>
+      <a href="#">Configuración</a>
+      <a href="checkmate-landing.html">Cerrar sesión</a>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <div class="topbar">
+
+      <div>
+        <h1>Dashboard</h1>
+        <p>Monitorea contenido y detecta desinformación en tiempo real.</p>
+      </div>
+
+      <div class="user">
+        <div class="avatar"></div>
+        <span>demo@empresa.com</span>
+      </div>
+
+    </div>
+
+    <!-- STATS -->
+
+    <section class="stats-grid">
+
+      <div class="card">
+        <div class="card-top">
+          <div>
+            <h3>Verificaciones Hoy</h3>
+            <div class="metric">24</div>
+          </div>
+
+          <div class="card-icon">✓</div>
+        </div>
+
+        <div class="metric-sub">
+          +12% vs ayer
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div>
+            <h3>Contenido Falso</h3>
+            <div class="metric">3</div>
+          </div>
+
+          <div class="card-icon">⚠</div>
+        </div>
+
+        <div class="metric-sub">
+          Detectado esta semana
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div>
+            <h3>Alertas Activas</h3>
+            <div class="metric">2</div>
+          </div>
+
+          <div class="card-icon">🔔</div>
+        </div>
+
+        <div class="metric-sub">
+          Requieren atención
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div>
+            <h3>Precisión</h3>
+            <div class="metric">98%</div>
+          </div>
+
+          <div class="card-icon">📈</div>
+        </div>
+
+        <div class="metric-sub">
+          Tasa de detección
+        </div>
+      </div>
+
+    </section>
+
+    <!-- CHARTS -->
+
+    <section class="charts">
+
+      <div class="chart-card">
+        <h2>Actividad Semanal</h2>
+
+        <canvas id="lineChart"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h2>Tipos Detectados</h2>
+
+        <canvas id="pieChart"></canvas>
+      </div>
+
+    </section>
+
+    <!-- TABLE -->
+
+    <section class="table-card">
+
+      <h2 style="margin-bottom:22px;">
+        Verificaciones recientes
+      </h2>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Contenido</th>
+            <th>Estado</th>
+            <th>Confianza</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr>
+            <td>Noticia sobre fusión corporativa</td>
+            <td>
+              <span class="status verified">
+                Verificado
+              </span>
+            </td>
+            <td>95%</td>
+            <td>Hace 2h</td>
+          </tr>
+
+          <tr>
+            <td>Imagen viralizada</td>
+            <td>
+              <span class="status warning">
+                Manipulado
+              </span>
+            </td>
+            <td>87%</td>
+            <td>Hace 5h</td>
+          </tr>
+
+          <tr>
+            <td>Video IA</td>
+            <td>
+              <span class="status danger">
+                Generado por IA
+              </span>
+            </td>
+            <td>92%</td>
+            <td>Hace 1 día</td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+
+  // LINE CHART
+
+  new Chart(document.getElementById('lineChart'), {
+
+    type: 'line',
+
+    data: {
+
+      labels: ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],
+
+      datasets: [{
+
+        label:'Verificaciones',
+
+        data:[12,19,14,22,18,27,24],
+
+        borderColor:'#B8213A',
+
+        backgroundColor:'rgba(184,33,58,0.12)',
+
+        tension:0.4,
+
+        fill:true
+
+      }]
+    },
+
+    options: {
+
+      responsive:true,
+
+      plugins:{
+        legend:{
+          display:false
+        }
+      }
+
+    }
+
+  });
+
+  // PIE CHART
+
+  new Chart(document.getElementById('pieChart'), {
+
+    type:'doughnut',
+
+    data:{
+
+      labels:[
+        'Verificado',
+        'Manipulado',
+        'IA'
+      ],
+
+      datasets:[{
+
+        data:[65,20,15],
+
+        backgroundColor:[
+          '#B8213A',
+          '#D94060',
+          '#F5C7D0'
+        ],
+
+        borderWidth:0
+
+      }]
+    },
+
+    options:{
+      responsive:true
+    }
+
+  });
+
+</script>
+
+</body>
+</html>

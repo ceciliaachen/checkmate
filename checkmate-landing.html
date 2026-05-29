@@ -21,8 +21,8 @@
       --border:    #DDD5CF;
       --chess-light: #EDE8E3;
       --chess-dark:  rgba(184,33,58,0.08);
-      --sans:      'Nunito', sans-serif;
-      --body:      'Nunito Sans', sans-serif;
+      --sans:      'Poppins', sans-serif;
+      --body:      'Poppins', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
@@ -39,7 +39,7 @@
     .chess-bg {
       background-image:
         repeating-conic-gradient(var(--chess-light) 0% 25%, var(--chess-dark) 0% 50%);
-      background-size: 48px 48px;
+      background-size: 150px 150px;
     }
 
     /* ── NAV ── */
@@ -68,11 +68,11 @@
       gap: 10px;
     }
 
-    .nav-logo svg { width: 28px; height: 28px; }
+    .nav-logo img { width: 32px; height: auto; }
 
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 50px;
       list-style: none;
     }
 
@@ -124,21 +124,9 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: center;
-      padding: 100px 48px 60px;
-      gap: 48px;
+      padding: 100px 120px 60px;
       position: relative;
       overflow: hidden;
-    }
-
-    /* Chess squares top-right decoration */
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 320px; height: 320px;
-      background-image: repeating-conic-gradient(var(--chess-light) 0% 25%, rgba(184,33,58,0.1) 0% 50%);
-      background-size: 64px 64px;
-      opacity: 0.7;
     }
 
     .hero-content { position: relative; z-index: 1; }
@@ -228,7 +216,7 @@
     /* Hero King illustration */
     .hero-visual {
       position: relative;
-      z-index: 1;
+      z-index: 50;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -236,74 +224,53 @@
 
     .king-wrapper {
       position: relative;
-      width: 380px;
-      height: 380px;
+      width: 100px;
+      height: 100px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .king-bg-circle {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(184,33,58,0.12) 0%, transparent 70%);
+    .king-bg-circle{
+      position:absolute;
+      width:260px;
+      height:260px;
+      border-radius:50%;
+      background:rgba(184, 33, 58, 0.25);
+      filter: blur(60px);
+
+      animation: pulseGlow 4s ease-in-out infinite;
     }
 
-    .king-chess-grid {
-      position: absolute;
-      inset: 20px;
-      border-radius: 50%;
-      overflow: hidden;
-      background-image: repeating-conic-gradient(rgba(184,33,58,0.06) 0% 25%, transparent 0% 50%);
-      background-size: 40px 40px;
+    @keyframes pulseGlow{
+      0%{ transform: scale(1); opacity:0.6;
+      }
+
+      50%{ transform: scale(1.1); opacity:1;
+      }
+
+      100%{ transform: scale(1); opacity:0.6;
+      }
     }
 
-    .king-svg-wrap {
-      position: relative;
-      z-index: 2;
-      width: 220px;
-      filter: drop-shadow(0 12px 40px rgba(184,33,58,0.3));
+    .king-piece-img{
+      width:320px;
+      height:auto;
+      position:relative;
+      z-index:2;
+
       animation: floatKing 4s ease-in-out infinite;
     }
 
     @keyframes floatKing {
-      0%,100% { transform: translateY(0); }
-      50%      { transform: translateY(-12px); }
-    }
-
-    /* ── STATS BAR ── */
-    .stats-bar {
-      background: var(--red);
-      padding: 36px 48px;
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-
-    .stat-item { text-align: center; }
-
-    .stat-num {
-      font-family: var(--sans);
-      font-size: 2.4rem;
-      font-weight: 900;
-      color: #fff;
-      display: block;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .stat-label {
-      font-family: var(--body);
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.75);
-      font-weight: 600;
+      0%{ transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+      100%{ transform: translateY(0); }
     }
 
     /* ── PROBLEM SECTION ── */
     .problem-section {
-      padding: 100px 48px;
+      padding: 100px 150px;
       background: var(--white);
     }
 
@@ -372,7 +339,7 @@
 
     /* ── HOW IT WORKS ── */
     .how-section {
-      padding: 100px 48px;
+      padding: 100px 150px;
       background: var(--bg);
     }
 
@@ -437,7 +404,7 @@
 
     /* ── B2B FEATURES ── */
     .features-section {
-      padding: 100px 48px;
+      padding: 100px 150px;
       background: var(--white);
     }
 
@@ -598,7 +565,7 @@
 
     /* ── PRICING ── */
     .pricing-section {
-      padding: 100px 48px;
+      padding: 100px 150px;
       background: var(--bg);
     }
 
@@ -907,8 +874,8 @@
 
     /* ── FOOTER ── */
     footer {
-      background: var(--text);
-      padding: 48px;
+      background: var(--red-dark);
+      padding: 50px 50px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -916,25 +883,58 @@
       gap: 24px;
     }
 
+    .footer-top{
+      display:grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr; gap:60px;
+      color: --var(--white);
+    }
+    
     .footer-logo {
       font-family: var(--sans);
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 900;
-      color: var(--red-light);
+      color: var(--white);
+      text-decoration: none;
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .footer-logo svg { width: 24px; height: 24px; }
+    .footer-logo img { filter: brightness(0) invert(1); width: 32px; height: auto; }
+
+    .footer-description{
+      max-width:320px;
+      color:#dc9a9a;
+      line-height:1.8;
+      font-size:1.05rem;
+    }
+
+    .footer-column{
+      display:flex;
+      color: var(--white);
+      flex-direction:column;
+      font-family:var(--sans);
+      font-size:1rem;
+      margin-bottom:10px;
+      gap:18px;
+    }
+
+    .footer-bottom{
+      text-align:center;
+      color:#dc9a9a;
+      padding-top:28px;
+
+      font-size:1rem;
+    }
 
     .footer-tagline {
       font-size: 0.82rem;
-      color: rgba(255,255,255,0.45);
+      color: rgba(235, 235, 235, 0.45);
       margin-top: 6px;
     }
 
     .footer-links {
+      color: var(--white);
       display: flex;
       gap: 28px;
       list-style: none;
@@ -942,11 +942,11 @@
     .footer-links a {
       font-size: 0.82rem;
       font-weight: 600;
-      color: rgba(255,255,255,0.5);
+      color: rgba(146, 30, 30, 0.5);
       text-decoration: none;
       transition: color 0.2s;
     }
-    .footer-links a:hover { color: rgba(255,255,255,0.9); }
+    .footer-links a:hover { color: rgba(255, 251, 251, 0.9); }
 
     /* ── ANIMATIONS ── */
     .fade-up {
@@ -981,10 +981,8 @@
   <!-- NAV -->
   <nav>
     <a class="nav-logo" href="#">
-      <svg viewBox="0 0 28 28" fill="none">
-        <path d="M14 2L10 7H6L8 12H4L9 18H7L14 26L21 18H19L24 12H20L22 7H18L14 2Z" fill="#B8213A"/>
-      </svg>
-      checkmate
+      <!-- <img src="pieza-ajedrez.png" alt="Chess Logo"> -->
+     checkmate
     </a>
     <ul class="nav-links">
       <li><a href="#problema">El problema</a></li>
@@ -1004,10 +1002,10 @@
       <span class="hero-tag">Tu antivirus de información falsa</span>
       <h1>
         Verificá lo que ves<br/>
-        <span>antes de creerlo.</span>
+        <span>antes de creerlo</span>
       </h1>
       <p class="hero-sub">
-        Checkmate detecta contenido falso, manipulado y generado con IA en cuestión de segundos. Monitoreo de marca 24/7, alertas en tiempo real y análisis que protegen a tu empresa.
+        Te ayudamos a detectar contenido falso, manipulado y generado con IA en cuestión de segundos. 
       </p>
       <div class="hero-actions">
         <a href="#auth" class="btn-hero">Empezar gratis →</a>
@@ -1018,41 +1016,15 @@
     <div class="hero-visual">
       <div class="king-wrapper">
         <div class="king-bg-circle"></div>
-        <div class="king-chess-grid"></div>
-        <!-- King SVG inline -->
-        <svg class="king-svg-wrap" viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M100 10 C100 10 90 30 90 40 C90 50 95 52 100 52 C105 52 110 50 110 40 C110 30 100 10 100 10Z" fill="#B8213A"/>
-          <rect x="88" y="18" width="24" height="6" rx="3" fill="#8C1A2C"/>
-          <rect x="97" y="10" width="6" height="24" rx="3" fill="#8C1A2C"/>
-          <path d="M80 56 C60 64 48 80 48 100 C48 116 56 126 68 132 L60 160 H140 L132 132 C144 126 152 116 152 100 C152 80 140 64 120 56 Z" fill="#B8213A"/>
-          <ellipse cx="100" cy="100" rx="36" ry="30" fill="#8C1A2C" opacity="0.3"/>
-          <path d="M60 160 L50 220 C50 232 62 240 100 240 C138 240 150 232 150 220 L140 160Z" fill="#B8213A"/>
-          <ellipse cx="100" cy="240" rx="50" ry="12" fill="#8C1A2C"/>
-          <path d="M68 132 C72 148 80 158 100 160 C120 158 128 148 132 132" fill="none" stroke="#8C1A2C" stroke-width="2"/>
-        </svg>
+        <!-- Imagen de la pieza -->
+        <img 
+          class="king-piece-img"
+          src="pieza-ajedrez.png" 
+          alt="Chess King"
+        >
       </div>
     </div>
   </section>
-
-  <!-- STATS BAR -->
-  <div class="stats-bar">
-    <div class="stat-item">
-      <span class="stat-num">88%</span>
-      <span class="stat-label">ve contenido falso con frecuencia</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">9/10</span>
-      <span class="stat-label">empresas ya se vieron afectadas</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">70%</span>
-      <span class="stat-label">más rápido se difunden las fake news</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">&lt;3s</span>
-      <span class="stat-label">para detectar contenido falso</span>
-    </div>
-  </div>
 
   <!-- PROBLEMA -->
   <section id="problema" class="problem-section">
@@ -1352,12 +1324,10 @@
   </section>
 
   <!-- FOOTER -->
-  <footer>
+  <!-- <footer>
     <div>
       <div class="footer-logo">
-        <svg viewBox="0 0 28 28" fill="none">
-          <path d="M14 2L10 7H6L8 12H4L9 18H7L14 26L21 18H19L24 12H20L22 7H18L14 2Z" fill="#D94060"/>
-        </svg>
+        <img src="pieza-ajedrez.png" alt="Chess Logo">
         checkmate
       </div>
       <div class="footer-tagline">Tu antivirus de información falsa · Buenos Aires, AR</div>
@@ -1369,6 +1339,49 @@
       <li><a href="#">Privacidad</a></li>
       <li><a href="#">Contacto</a></li>
     </ul>
+  </footer> -->
+
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+
+        <div class="footer-logo">
+          <img src="pieza-ajedrez.png" alt="Chess Logo">
+          <span>CheckMate</span>
+        </div>
+
+        <p class="footer-description">
+          Tu antivirus de información falsa. 
+        </p>
+
+      </div>
+
+      <!-- Columna -->
+      <div class="footer-column">
+        Producto
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#precios">Precios</a>
+      </div>
+
+      <!-- Columna -->
+      <div class="footer-column">
+        Empresa
+        <a href="#problema">Nosotros</a>
+        <a href="#">Contacto</a>
+      </div>
+
+      <!-- Columna -->
+      <div class="footer-column">
+        Legal
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+      </div>
+
+    </div>
+    <!-- Bottom -->
+    <div class="footer-bottom">
+      © 2026 CheckMate. Todos los derechos reservados.
+    </div>
   </footer>
 
   <script>
@@ -1392,5 +1405,23 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
   </script>
+
+  <script>
+    function handleAuth(event, type) {
+      event.preventDefault();
+
+      // Simulación de autenticación
+      if (type === "signup") {
+        alert("Cuenta creada correctamente");
+      } else {
+        alert("Inicio de sesión exitoso");
+      }
+
+      // Redirección al dashboard
+      window.location.href = "dashboard.html";
+    }
+  </script>
+
+
 </body>
 </html>
