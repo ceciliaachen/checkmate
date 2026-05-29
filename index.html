@@ -149,6 +149,15 @@
         border-color: var(--red-dark);
       }
 
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--bg);
+        opacity: 0.65;
+        z-index: 0;
+      }
+
       /* ── HERO ── */
       .hero {
         min-height: 100vh;
@@ -1189,21 +1198,20 @@
           <span>antes de creerlo</span>
         </h1>
         <p class="hero-sub">
-          Te ayudamos a detectar contenido falso, manipulado y generado con IA
-          en cuestión de segundos.
+          Checkmate detecta contenido falso, manipulado y generado con IA en
+          cuestión de segundos.
         </p>
         <div class="hero-actions">
           <a href="#auth" class="btn-hero">Empezar gratis</a>
           <a href="#como-funciona" class="btn-hero-ghost">Ver cómo funciona</a>
         </div>
       </div>
-
     </section>
 
     <!-- PROBLEMA -->
     <section id="problema" class="problem-section">
       <span class="section-eyebrow">el problema</span>
-      <h2 class="section-title">La verdad está en riesgo.</h2>
+      <h2 class="section-title">La verdad está en riesgo</h2>
       <p class="section-sub">
         Un falso rumor hundió las acciones de United Airlines casi un 100%.
         Noticias falsas sobre figuras políticas se viralizan antes de que
