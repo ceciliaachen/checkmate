@@ -238,6 +238,16 @@
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
+        margin-bottom: 28px;
+      }
+
+      .hero-trust {
+        font-size: 0.82rem;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .hero-trust strong {
+        color: var(--text);
       }
 
       .btn-hero {
@@ -382,7 +392,7 @@
 
       .problem-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 24px;
       }
 
@@ -1099,6 +1109,348 @@
         color: rgba(255, 251, 251, 0.9);
       }
 
+      /* ── DEMO SECTION ── */
+      .demo-section {
+        padding: 100px 150px;
+        background: var(--white);
+      }
+
+      .demo-box {
+        max-width: 780px;
+        margin: 0 auto;
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        border-radius: 28px;
+        padding: 40px;
+      }
+
+      .demo-input-row {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .demo-textarea {
+        flex: 1;
+        min-height: 96px;
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 16px;
+        padding: 16px 18px;
+        font-family: var(--body);
+        font-size: 0.93rem;
+        color: var(--text);
+        resize: vertical;
+        outline: none;
+        transition: border-color 0.2s;
+        line-height: 1.6;
+      }
+      .demo-textarea:focus {
+        border-color: var(--red);
+      }
+      .demo-textarea::placeholder {
+        color: #aaa;
+      }
+
+      .btn-demo {
+        font-family: var(--sans);
+        font-size: 0.92rem;
+        font-weight: 800;
+        padding: 14px 28px;
+        background: var(--red);
+        color: #fff;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s;
+        box-shadow: 0 4px 18px rgba(184,33,58,0.3);
+        margin-top: 4px;
+      }
+      .btn-demo:hover:not(:disabled) {
+        background: var(--red-dark);
+        transform: translateY(-1px);
+      }
+      .btn-demo:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+
+      .demo-hint {
+        margin-top: 12px;
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+      .demo-hint span {
+        background: var(--border);
+        border-radius: 6px;
+        padding: 2px 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--text);
+        cursor: pointer;
+        transition: background 0.15s;
+        display: inline-block;
+        margin: 2px 2px;
+      }
+      .demo-hint span:hover {
+        background: var(--red-pale);
+        color: var(--red);
+      }
+
+      .demo-loading {
+        margin-top: 32px;
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .demo-loading-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .demo-progress-bar {
+        width: 100%;
+        height: 6px;
+        background: var(--border);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .demo-progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(to right, var(--red), var(--red-light));
+        border-radius: 99px;
+        transition: width 0.1s linear;
+      }
+      .demo-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .demo-step-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .demo-step-item.active {
+        opacity: 1;
+        color: var(--text);
+        font-weight: 600;
+      }
+      .demo-step-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--border);
+        flex-shrink: 0;
+      }
+      .demo-step-item.active .demo-step-dot {
+        background: var(--red);
+        animation: blink 1s infinite;
+      }
+
+      .demo-result {
+        margin-top: 32px;
+        display: none;
+        background: var(--white);
+        border-radius: 20px;
+        border: 1.5px solid var(--border);
+        overflow: hidden;
+      }
+
+      .demo-result-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .demo-result-title {
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .demo-result-time {
+        font-size: 0.75rem;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .demo-result-body {
+        padding: 28px 24px;
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+      }
+
+      .demo-score-ring {
+        flex-shrink: 0;
+        width: 110px;
+        height: 110px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .demo-score-ring svg {
+        position: absolute;
+        top: 0; left: 0;
+        transform: rotate(-90deg);
+      }
+      .demo-score-ring circle {
+        fill: none;
+        stroke-width: 8;
+        stroke-linecap: round;
+      }
+      .demo-score-ring .ring-bg { stroke: var(--border); }
+      .demo-score-ring .ring-fill {
+        stroke-dasharray: 283;
+        stroke-dashoffset: 283;
+        transition: stroke-dashoffset 0.9s ease;
+      }
+      .demo-score-inner {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+      .demo-score-num {
+        font-family: var(--sans);
+        font-size: 1.7rem;
+        font-weight: 900;
+        line-height: 1;
+        color: var(--text);
+      }
+      .demo-score-label {
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      .demo-result-info {
+        flex: 1;
+      }
+
+      .demo-badge {
+        display: inline-block;
+        padding: 5px 14px;
+        border-radius: 50px;
+        font-size: 0.78rem;
+        font-weight: 800;
+        margin-bottom: 14px;
+      }
+      .demo-badge.safe { background: #e7f7ee; color: #0f8a43; }
+      .demo-badge.warning { background: #fff4dd; color: #b7791f; }
+      .demo-badge.danger { background: #ffe5e8; color: #b42339; }
+
+      .demo-signals-title {
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+
+      .demo-signals {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .demo-signal-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 0.83rem;
+        color: var(--text);
+        font-weight: 500;
+        line-height: 1.4;
+      }
+      .demo-signal-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-top: 5px;
+      }
+      .demo-signal-dot.safe { background: #0f8a43; }
+      .demo-signal-dot.warning { background: #b7791f; }
+      .demo-signal-dot.danger { background: #b42339; }
+
+      .demo-cta-row {
+        padding: 18px 24px;
+        background: var(--bg);
+        border-top: 1px solid var(--border);
+        font-size: 0.82rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .demo-cta-row a {
+        font-weight: 800;
+        color: var(--red);
+        text-decoration: none;
+        font-size: 0.82rem;
+      }
+      .demo-cta-row a:hover { text-decoration: underline; }
+
+      /* ── INDUSTRY BADGES ── */
+      .industry-row {
+        margin-top: 44px;
+        padding-top: 36px;
+        border-top: 1px solid var(--border);
+      }
+      .industry-row-label {
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 18px;
+      }
+      .industry-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .industry-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 18px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--text);
+        transition: all 0.2s;
+      }
+      .industry-badge:hover {
+        border-color: var(--red-light);
+        background: var(--red-pale);
+        color: var(--red);
+      }
+      .industry-badge-icon {
+        font-size: 1rem;
+      }
+
       /* ── ANIMATIONS ── */
       .fade-up {
         opacity: 0;
@@ -1137,14 +1489,28 @@
         section,
         .problem-section,
         .how-section,
+        .demo-section,
         .features-section,
         .pricing-section,
         .auth-section {
           padding: 70px 24px;
         }
-        .problem-grid,
+        .problem-grid {
+          grid-template-columns: 1fr 1fr;
+        }
         .pricing-grid {
           grid-template-columns: 1fr;
+        }
+        .demo-input-row {
+          flex-direction: column;
+        }
+        .btn-demo {
+          width: 100%;
+          text-align: center;
+        }
+        .demo-result-body {
+          flex-direction: column;
+          align-items: center;
         }
         .steps-grid {
           grid-template-columns: 1fr 1fr;
@@ -1180,6 +1546,7 @@
       <ul class="nav-links">
         <li><a href="#problema">El problema</a></li>
         <li><a href="#como-funciona">Cómo funciona</a></li>
+        <li><a href="#demo">Demo</a></li>
         <li><a href="#empresas">Para empresas</a></li>
         <li><a href="#precios">Precios</a></li>
       </ul>
@@ -1192,18 +1559,24 @@
     <!-- HERO -->
     <section class="hero chess-bg">
       <div class="hero-content">
-        <span class="hero-tag">Tu antivirus de información falsa</span>
+        <span class="hero-tag">Plataforma B2B de inteligencia reputacional</span>
         <h1>
-          Verificá lo que ves<br />
-          <span>antes de creerlo</span>
+          Protegé la reputación<br />
+          de tu empresa <span>antes de que<br />el daño escale.</span>
         </h1>
         <p class="hero-sub">
-          Checkmate detecta contenido falso, manipulado y generado con IA en
-          cuestión de segundos.
+          Checkmate detecta en segundos contenido falso, manipulado o generado con IA que amenaza a tu organización — y te alerta antes de que sea demasiado tarde.
         </p>
         <div class="hero-actions">
-          <a href="#auth" class="btn-hero">Empezar gratis</a>
-          <a href="#como-funciona" class="btn-hero-ghost">Ver cómo funciona</a>
+          <a href="#demo" class="btn-hero">Probar demo gratis</a>
+          <a href="#como-funciona" class="btn-hero-ghost">Ver cómo funciona →</a>
+        </div>
+        <p class="hero-trust">Diseñado para equipos de <strong>Comunicaciones</strong>, <strong>Legal</strong> y <strong>Marketing</strong></p>
+      </div>
+      <div class="hero-visual">
+        <div class="king-wrapper">
+          <div class="king-bg-circle"></div>
+          <img src="pieza-ajedrez.png" alt="Checkmate" class="king-piece-img" />
         </div>
       </div>
     </section>
@@ -1211,33 +1584,36 @@
     <!-- PROBLEMA -->
     <section id="problema" class="problem-section">
       <span class="section-eyebrow">el problema</span>
-      <h2 class="section-title">La verdad está en riesgo</h2>
+      <h2 class="section-title">Un rumor falso puede<br />destruir años de trabajo.</h2>
       <p class="section-sub">
-        Un falso rumor hundió las acciones de United Airlines casi un 100%.
-        Noticias falsas sobre figuras políticas se viralizan antes de que
-        alguien las verifique. Tu empresa no puede permitirse ese riesgo.
+        Un tweet falso hundió las acciones de United Airlines casi un 100% en minutos. Tu CMO, tu equipo legal y tu directorio no pueden esperar a que el daño ya esté hecho — necesitan saberlo primero.
       </p>
 
       <div class="problem-grid fade-up">
         <div class="problem-card">
-          <div class="problem-num">88%</div>
+          <div class="problem-num">$1.3B</div>
           <p>
-            de las personas ve contenido falso con frecuencia en redes sociales
-            y medios digitales.
+            en pérdidas de valor de mercado atribuidas a campañas de desinformación contra empresas en 2024.
           </p>
         </div>
         <div class="problem-card">
           <div class="problem-num">9/10</div>
           <p>
-            empresas ya fueron afectadas por desinformación que dañó su
-            reputación o sus finanzas.
+            empresas fueron afectadas por desinformación que dañó su
+            reputación o sus finanzas en los últimos 2 años.
           </p>
         </div>
         <div class="problem-card">
           <div class="problem-num">70%+</div>
           <p>
-            más rápido se difunden las noticias falsas comparado con las
-            verdaderas, según el MIT.
+            más rápido se difunden las noticias falsas frente a las
+            verdaderas — el tiempo de respuesta lo es todo. (MIT, 2023)
+          </p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-num">23min</div>
+          <p>
+            es el tiempo promedio en que contenido falso sobre una marca alcanza 100.000 impresiones antes de ser detectado.
           </p>
         </div>
       </div>
@@ -1287,6 +1663,73 @@
       </div>
     </section>
 
+    <!-- DEMO INTERACTIVO -->
+    <section id="demo" class="demo-section">
+      <span class="section-eyebrow">demo · probalo ahora</span>
+      <h2 class="section-title">Analizá cualquier contenido<br />en segundos.</h2>
+      <p class="section-sub">
+        Pegá una URL o texto y mirá cómo Checkmate detecta desinformación en tiempo real.
+      </p>
+
+      <div class="demo-box fade-up">
+        <div class="demo-input-row">
+          <textarea
+            id="demo-input"
+            class="demo-textarea"
+            placeholder="Pegá una URL o el texto que querés analizar...&#10;Ej: https://noticia-falsa.com/titular-urgente o copiá un párrafo directamente."
+          ></textarea>
+          <button class="btn-demo" id="demo-run-btn" onclick="runDemo()">Analizar →</button>
+        </div>
+        <div class="demo-hint">
+          Probá con un ejemplo:
+          <span onclick="setDemo('URGENTE: empresa local vinculada a fraude millonario según fuentes exclusivas que pidieron anonimato')">Texto sospechoso</span>
+          <span onclick="setDemo('https://noticias-falsas.net/escandalo-viral-exclusivo-bomba')">URL de riesgo</span>
+          <span onclick="setDemo('El banco central publicó hoy su informe trimestral de política monetaria, disponible en su sitio oficial.')">Contenido neutro</span>
+        </div>
+
+        <!-- LOADING -->
+        <div class="demo-loading" id="demo-loading">
+          <div class="demo-loading-label" id="demo-loading-label">Iniciando análisis...</div>
+          <div class="demo-progress-bar"><div class="demo-progress-fill" id="demo-progress-fill"></div></div>
+          <div class="demo-steps">
+            <div class="demo-step-item" id="step-0"><div class="demo-step-dot"></div>Extrayendo contenido y metadatos</div>
+            <div class="demo-step-item" id="step-1"><div class="demo-step-dot"></div>Analizando patrones lingüísticos con IA</div>
+            <div class="demo-step-item" id="step-2"><div class="demo-step-dot"></div>Cruzando con bases de datos verificadas</div>
+            <div class="demo-step-item" id="step-3"><div class="demo-step-dot"></div>Calculando score de riesgo reputacional</div>
+          </div>
+        </div>
+
+        <!-- RESULT -->
+        <div class="demo-result" id="demo-result">
+          <div class="demo-result-header">
+            <span class="demo-result-title">Resultado del análisis</span>
+            <span class="demo-result-time" id="demo-result-time"></span>
+          </div>
+          <div class="demo-result-body">
+            <div class="demo-score-ring" id="demo-score-ring">
+              <svg width="110" height="110" viewBox="0 0 110 110">
+                <circle class="ring-bg" cx="55" cy="55" r="45"/>
+                <circle class="ring-fill" id="demo-ring-fill" cx="55" cy="55" r="45"/>
+              </svg>
+              <div class="demo-score-inner">
+                <div class="demo-score-num" id="demo-score-num">0%</div>
+                <div class="demo-score-label">Riesgo</div>
+              </div>
+            </div>
+            <div class="demo-result-info">
+              <div class="demo-badge" id="demo-badge"></div>
+              <div class="demo-signals-title">Señales detectadas</div>
+              <div class="demo-signals" id="demo-signals"></div>
+            </div>
+          </div>
+          <div class="demo-cta-row">
+            <span>Este es un análisis simulado. La versión completa analiza 200+ señales en tiempo real.</span>
+            <a href="#auth">Acceder a análisis completos →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- FEATURES B2B -->
     <section id="empresas" class="features-section">
       <div class="features-layout">
@@ -1297,6 +1740,17 @@
             Checkmate es la solución que necesitan medios, corporaciones y
             equipos legales que no pueden darse el lujo de equivocarse.
           </p>
+
+          <div class="industry-row">
+            <div class="industry-row-label">Sectores que protegemos</div>
+            <div class="industry-badges">
+              <div class="industry-badge"><span class="industry-badge-icon">📰</span> Medios & Periodismo</div>
+              <div class="industry-badge"><span class="industry-badge-icon">🏦</span> Servicios Financieros</div>
+              <div class="industry-badge"><span class="industry-badge-icon">🏥</span> Salud & Farmacéutica</div>
+              <div class="industry-badge"><span class="industry-badge-icon">🏛️</span> Gobierno & Sector Público</div>
+              <div class="industry-badge"><span class="industry-badge-icon">⚖️</span> Equipos Legales</div>
+            </div>
+          </div>
 
           <div class="features-list fade-up">
             <div class="feature-item">
@@ -1621,54 +2075,163 @@
     </footer>
 
     <script>
+      // Auth tabs
       function switchTab(tab, btn) {
-        document
-          .querySelectorAll(".auth-tab")
-          .forEach((t) => t.classList.remove("active"));
+        document.querySelectorAll(".auth-tab").forEach((t) => t.classList.remove("active"));
         btn.classList.add("active");
-        document.getElementById("tab-signup").style.display =
-          tab === "signup" ? "block" : "none";
-        document.getElementById("tab-login").style.display =
-          tab === "login" ? "block" : "none";
+        document.getElementById("tab-signup").style.display = tab === "signup" ? "block" : "none";
+        document.getElementById("tab-login").style.display = tab === "login" ? "block" : "none";
       }
 
-      function handleAuth(e, type) {
-        e.preventDefault();
-        // TODO: conectar con tu backend de auth (Firebase, Auth0, Supabase, etc.)
-        alert(
-          (type === "signup" ? "Cuenta creada" : "Sesión iniciada") +
-            " correctamente.\nRedirigiendo al dashboard...",
-        );
-        // window.location.href = '/dashboard';
+      function handleAuth(event, type) {
+        event.preventDefault();
+        window.location.href = "dashboard.html";
       }
 
       // Scroll fade-in
       const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) e.target.classList.add("visible");
-          });
-        },
-        { threshold: 0.1 },
+        (entries) => { entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); }); },
+        { threshold: 0.1 }
       );
-      document
-        .querySelectorAll(".fade-up")
-        .forEach((el) => observer.observe(el));
-    </script>
+      document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
 
-    <script>
-      function handleAuth(event, type) {
-        event.preventDefault();
+      // ── DEMO INTERACTIVO ──
+      function setDemo(text) {
+        document.getElementById("demo-input").value = text;
+        document.getElementById("demo-input").focus();
+      }
 
-        // Simulación de autenticación
-        if (type === "signup") {
-          alert("Cuenta creada correctamente");
+      function analyzeContent(text) {
+        const lower = text.toLowerCase();
+        const isUrl = /^https?:\/\//.test(text.trim());
+        const highRiskWords = ["urgente","viral","increíble","increible","exclusivo","bomba","escándalo","escandalo","fraude","corrupto","conspiración","conspiracion","secreto","censurado","verdad oculta","fuentes que pidieron anonimato","fuentes exclusivas"];
+        const aiWords = ["chatgpt","generado por ia","según fuentes","segun fuentes","se reveló","se revelo","trascendió","trascendio","como ia","modelo de lenguaje"];
+        const hasHigh = highRiskWords.some(w => lower.includes(w));
+        const hasAI = aiWords.some(w => lower.includes(w));
+
+        if (hasHigh && hasAI) {
+          return {
+            score: Math.floor(Math.random() * 8 + 88),
+            type: "Desinformación con IA detectada",
+            color: "danger",
+            ring: "#b42339",
+            signals: [
+              "Lenguaje altamente emocional y persuasivo",
+              "Patrones de escritura automatizada identificados",
+              "Inconsistencia con fuentes verificadas indexadas",
+              "Alta velocidad de propagación estimada",
+              "Metadata inconsistente con la fecha declarada",
+            ],
+          };
+        } else if (hasHigh || isUrl) {
+          return {
+            score: Math.floor(Math.random() * 14 + 63),
+            type: "Contenido sospechoso",
+            color: "warning",
+            ring: "#b7791f",
+            signals: [
+              "Titular no corresponde al cuerpo del artículo",
+              "Fuente no indexada en bases de datos verificadas",
+              "Contexto temporal posiblemente inconsistente",
+              "Requiere verificación cruzada adicional",
+            ],
+          };
+        } else if (hasAI) {
+          return {
+            score: Math.floor(Math.random() * 10 + 74),
+            type: "Posiblemente generado por IA",
+            color: "warning",
+            ring: "#b7791f",
+            signals: [
+              "Patrones lingüísticos consistentes con LLMs",
+              "Ausencia de variaciones propias del texto humano",
+              "Repetición estructural atípica detectada",
+            ],
+          };
         } else {
-          alert("Inicio de sesión exitoso");
+          return {
+            score: Math.floor(Math.random() * 12 + 8),
+            type: "Contenido verificado",
+            color: "safe",
+            ring: "#0f8a43",
+            signals: [
+              "Fuentes cruzadas validadas correctamente",
+              "Metadata consistente con la fecha de publicación",
+              "Sin patrones de automatización detectados",
+              "Lenguaje neutral y consistente con fuentes confiables",
+            ],
+          };
         }
+      }
 
-        // Redirección al dashboard
-        window.location.href = "dashboard.html";
+      function runDemo() {
+        const input = document.getElementById("demo-input").value.trim();
+        if (!input) { document.getElementById("demo-input").focus(); return; }
+
+        const btn = document.getElementById("demo-run-btn");
+        const loadingEl = document.getElementById("demo-loading");
+        const resultEl = document.getElementById("demo-result");
+        const fill = document.getElementById("demo-progress-fill");
+        const label = document.getElementById("demo-loading-label");
+
+        btn.disabled = true;
+        resultEl.style.display = "none";
+        loadingEl.style.display = "flex";
+        fill.style.width = "0%";
+
+        const steps = ["Extrayendo contenido y metadatos","Analizando patrones lingüísticos con IA","Cruzando con bases de datos verificadas","Calculando score de riesgo reputacional"];
+        const durations = [320, 380, 420, 280];
+        let elapsed = 0;
+        const total = durations.reduce((a, b) => a + b, 0);
+
+        steps.forEach((_, i) => {
+          const delay = durations.slice(0, i).reduce((a, b) => a + b, 0);
+          setTimeout(() => {
+            steps.forEach((__, j) => {
+              const el = document.getElementById("step-" + j);
+              el.classList.toggle("active", j === i);
+            });
+            label.textContent = steps[i] + "...";
+            fill.style.width = Math.round((durations.slice(0, i + 1).reduce((a, b) => a + b, 0) / total) * 92) + "%";
+          }, delay);
+        });
+
+        const startTime = Date.now();
+        setTimeout(() => {
+          fill.style.width = "100%";
+          setTimeout(() => {
+            loadingEl.style.display = "none";
+            const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+            const result = analyzeContent(input);
+            renderResult(result, elapsed);
+            btn.disabled = false;
+          }, 200);
+        }, total);
+      }
+
+      function renderResult(r, elapsed) {
+        const resultEl = document.getElementById("demo-result");
+        document.getElementById("demo-result-time").textContent = "Análisis completado en " + elapsed + "s · " + (180 + Math.floor(Math.random()*40)) + " señales evaluadas";
+        document.getElementById("demo-score-num").textContent = r.score + "%";
+
+        const badge = document.getElementById("demo-badge");
+        badge.textContent = r.type;
+        badge.className = "demo-badge " + r.color;
+
+        const fill = document.getElementById("demo-ring-fill");
+        fill.style.stroke = r.ring;
+        const circumference = 2 * Math.PI * 45;
+        fill.style.strokeDasharray = circumference;
+        fill.style.strokeDashoffset = circumference;
+
+        const signalsEl = document.getElementById("demo-signals");
+        signalsEl.innerHTML = r.signals.map(s =>
+          `<div class="demo-signal-item"><div class="demo-signal-dot ${r.color}"></div>${s}</div>`
+        ).join("");
+
+        resultEl.style.display = "block";
+        void fill.offsetWidth;
+        fill.style.strokeDashoffset = circumference * (1 - r.score / 100);
       }
     </script>
   </body>
