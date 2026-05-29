@@ -1,1330 +1,1563 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>checkmate — Tu antivirus de información falsa</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --red:       #B8213A;
-      --red-dark:  #8C1A2C;
-      --red-light: #D94060;
-      --red-pale:  #F5E8EB;
-      --bg:        #F2EEEB;
-      --white:     #FFFFFF;
-      --text:      #1A1A1A;
-      --muted:     #6B6B6B;
-      --border:    #DDD5CF;
-      --chess-light: #EDE8E3;
-      --chess-dark:  rgba(184,33,58,0.08);
-      --sans:      'Poppins', sans-serif;
-      --body:      'Poppins', sans-serif;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--body);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ── CHESS PATTERN BG ── */
-    .chess-bg {
-      background-image:
-        repeating-conic-gradient(var(--chess-light) 0% 25%, var(--chess-dark) 0% 50%);
-      background-size: 150px 150px;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      height: 68px;
-      background: rgba(242, 238, 235, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: var(--sans);
-      font-size: 1.5rem;
-      font-weight: 900;
-      color: var(--red);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .nav-logo img { width: 32px; height: auto; }
-
-    .nav-links {
-      display: flex;
-      gap: 50px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: var(--sans);
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--red); }
-
-    .nav-cta { display: flex; gap: 12px; align-items: center; }
-
-    .btn-outline {
-      font-family: var(--sans);
-      font-size: 0.88rem;
-      font-weight: 700;
-      padding: 9px 22px;
-      border: 2px solid var(--red);
-      color: var(--red);
-      background: transparent;
-      border-radius: 50px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-outline:hover { background: var(--red); color: #fff; }
-
-    .btn-solid {
-      font-family: var(--sans);
-      font-size: 0.88rem;
-      font-weight: 800;
-      padding: 9px 22px;
-      background: var(--red);
-      color: #fff;
-      border: 2px solid var(--red);
-      border-radius: 50px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-solid:hover { background: var(--red-dark); border-color: var(--red-dark); }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 100px 120px 60px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-content { position: relative; z-index: 1; }
-
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--red-pale);
-      color: var(--red);
-      font-family: var(--sans);
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 6px 16px;
-      border-radius: 50px;
-      margin-bottom: 28px;
-    }
-
-    .hero-tag::before {
-      content: '';
-      width: 7px; height: 7px;
-      background: var(--red);
-      border-radius: 50%;
-      animation: blink 1.8s infinite;
-    }
-
-    @keyframes blink {
-      0%,100% { opacity:1; } 50% { opacity:0.2; }
-    }
-
-    .hero h1 {
-      font-family: var(--sans);
-      font-size: clamp(2.6rem, 5vw, 4.2rem);
-      font-weight: 900;
-      line-height: 1.08;
-      color: var(--text);
-      margin-bottom: 24px;
-    }
-
-    .hero h1 span { color: var(--red); }
-
-    .hero-sub {
-      font-size: 1.05rem;
-      color: var(--muted);
-      line-height: 1.75;
-      max-width: 480px;
-      margin-bottom: 40px;
-    }
-
-    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
-
-    .btn-hero {
-      font-family: var(--sans);
-      font-size: 1rem;
-      font-weight: 800;
-      padding: 14px 32px;
-      background: var(--red);
-      color: #fff;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-      box-shadow: 0 4px 20px rgba(184,33,58,0.35);
-    }
-    .btn-hero:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 6px 28px rgba(184,33,58,0.4); }
-
-    .btn-hero-ghost {
-      font-family: var(--sans);
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 14px 28px;
-      background: transparent;
-      color: var(--text);
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      transition: color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .btn-hero-ghost:hover { color: var(--red); }
-
-    /* Hero King illustration */
-    .hero-visual {
-      position: relative;
-      z-index: 50;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .king-wrapper {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .king-bg-circle{
-      position:absolute;
-      width:260px;
-      height:260px;
-      border-radius:50%;
-      background:rgba(184, 33, 58, 0.25);
-      filter: blur(60px);
-
-      animation: pulseGlow 4s ease-in-out infinite;
-    }
-
-    @keyframes pulseGlow{
-      0%{ transform: scale(1); opacity:0.6;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>checkmate — Tu antivirus de información falsa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
-      50%{ transform: scale(1.1); opacity:1;
+      :root {
+        --red: #b8213a;
+        --red-dark: #8c1a2c;
+        --red-light: #d94060;
+        --red-pale: #f5e8eb;
+        --bg: #f2eeeb;
+        --white: #ffffff;
+        --text: #1a1a1a;
+        --muted: #6b6b6b;
+        --border: #ddd5cf;
+        --chess-light: #ede8e3;
+        --chess-dark: rgba(184, 33, 58, 0.08);
+        --sans: "Poppins", sans-serif;
+        --body: "Poppins", sans-serif;
       }
 
-      100%{ transform: scale(1); opacity:0.6;
+      html {
+        scroll-behavior: smooth;
       }
-    }
-
-    .king-piece-img{
-      width:320px;
-      height:auto;
-      position:relative;
-      z-index:2;
-
-      animation: floatKing 4s ease-in-out infinite;
-    }
-
-    @keyframes floatKing {
-      0%{ transform: translateY(0); }
-      50% { transform: translateY(-18px); }
-      100%{ transform: translateY(0); }
-    }
-
-    /* ── PROBLEM SECTION ── */
-    .problem-section {
-      padding: 100px 150px;
-      background: var(--white);
-    }
-
-    .section-eyebrow {
-      font-family: var(--sans);
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 16px;
-      display: block;
-    }
-
-    .section-title {
-      font-family: var(--sans);
-      font-size: clamp(1.8rem, 3.5vw, 3rem);
-      font-weight: 900;
-      line-height: 1.1;
-      color: var(--text);
-      margin-bottom: 16px;
-    }
-
-    .section-sub {
-      font-size: 1rem;
-      color: var(--muted);
-      line-height: 1.75;
-      max-width: 560px;
-      margin-bottom: 56px;
-    }
-
-    .problem-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .problem-card {
-      background: var(--bg);
-      border-radius: 20px;
-      padding: 36px 32px;
-      border: 1px solid var(--border);
-      transition: all 0.3s;
-    }
-    .problem-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(184,33,58,0.12);
-      border-color: var(--red-light);
-    }
-
-    .problem-num {
-      font-family: var(--sans);
-      font-size: 3.5rem;
-      font-weight: 900;
-      color: var(--red);
-      line-height: 1;
-      margin-bottom: 12px;
-    }
-
-    .problem-card p {
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.7;
-      font-weight: 600;
-    }
-
-    /* ── HOW IT WORKS ── */
-    .how-section {
-      padding: 100px 150px;
-      background: var(--bg);
-    }
-
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      position: relative;
-      margin-top: 16px;
-    }
-
-    /* connecting line */
-    .steps-grid::before {
-      content: '';
-      position: absolute;
-      top: 42px;
-      left: 12.5%;
-      right: 12.5%;
-      height: 2px;
-      background: linear-gradient(to right, var(--red), var(--red-light));
-      z-index: 0;
-    }
-
-    .step {
-      text-align: center;
-      padding: 0 20px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .step-circle {
-      width: 84px; height: 84px;
-      border-radius: 50%;
-      background: var(--red);
-      color: #fff;
-      font-family: var(--sans);
-      font-size: 1.6rem;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-      box-shadow: 0 6px 24px rgba(184,33,58,0.3);
-      transition: transform 0.3s;
-    }
-
-    .step:hover .step-circle { transform: scale(1.1); }
-
-    .step h3 {
-      font-family: var(--sans);
-      font-size: 1rem;
-      font-weight: 800;
-      margin-bottom: 10px;
-      color: var(--text);
-    }
-
-    .step p {
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    /* ── B2B FEATURES ── */
-    .features-section {
-      padding: 100px 150px;
-      background: var(--white);
-    }
-
-    .features-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-
-    .features-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin-top: 40px;
-    }
-
-    .feature-item {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      padding: 24px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      transition: all 0.3s;
-      cursor: default;
-    }
-    .feature-item:hover {
-      border-color: var(--red-light);
-      box-shadow: 0 4px 20px rgba(184,33,58,0.1);
-    }
-
-    .feature-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      background: var(--red-pale);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 1.3rem;
-    }
-
-    .feature-item h4 {
-      font-family: var(--sans);
-      font-size: 0.95rem;
-      font-weight: 800;
-      margin-bottom: 5px;
-      color: var(--text);
-    }
-
-    .feature-item p {
-      font-size: 0.87rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    /* Visual panel */
-    .features-visual {
-      background: var(--red);
-      border-radius: 28px;
-      padding: 40px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .features-visual::before {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 200px; height: 200px;
-      background-image: repeating-conic-gradient(rgba(255,255,255,0.06) 0% 25%, transparent 0% 50%);
-      background-size: 40px 40px;
-    }
-
-    .visual-header {
-      font-family: var(--sans);
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: rgba(255,255,255,0.6);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .visual-header::before {
-      content: '';
-      width: 8px; height: 8px;
-      background: #4ADE80;
-      border-radius: 50%;
-      animation: blink 2s infinite;
-    }
-
-    .visual-title {
-      font-family: var(--sans);
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-
-    .visual-sub {
-      font-size: 0.88rem;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 32px;
-    }
-
-    .visual-metrics {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .metric-box {
-      background: rgba(255,255,255,0.12);
-      border-radius: 14px;
-      padding: 18px;
-    }
-
-    .metric-val {
-      font-family: var(--sans);
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: #fff;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .metric-label {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.65);
-      font-weight: 600;
-    }
-
-    .visual-alert {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-left: 3px solid #FBBF24;
-      border-radius: 10px;
-      padding: 14px 16px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .alert-icon { font-size: 1.1rem; }
-
-    .alert-text {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.85);
-      font-weight: 600;
-      line-height: 1.4;
-    }
-
-    /* ── PRICING ── */
-    .pricing-section {
-      padding: 100px 150px;
-      background: var(--bg);
-    }
-
-    .pricing-section .section-title,
-    .pricing-section .section-sub { max-width: 100%; }
-
-    .pricing-section .section-sub { max-width: 520px; }
-
-    .pricing-header { text-align: center; margin-bottom: 56px; }
-    .pricing-header .section-eyebrow { display: block; }
-    .pricing-header .section-sub { margin: 0 auto; }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .price-card {
-      background: var(--white);
-      border-radius: 24px;
-      padding: 40px 36px;
-      border: 2px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      transition: all 0.3s;
-    }
-    .price-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-    }
-
-    .price-card.featured {
-      background: var(--red);
-      border-color: var(--red);
-      position: relative;
-    }
-
-    .popular-badge {
-      position: absolute;
-      top: -14px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--text);
-      color: #fff;
-      font-family: var(--sans);
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 5px 16px;
-      border-radius: 50px;
-      white-space: nowrap;
-    }
-
-    .price-tier {
-      font-family: var(--sans);
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-    .price-card.featured .price-tier { color: rgba(255,255,255,0.7); }
-
-    .price-amount {
-      font-family: var(--sans);
-      font-size: 3rem;
-      font-weight: 900;
-      color: var(--text);
-      line-height: 1;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: flex-start;
-      gap: 4px;
-    }
-    .price-card.featured .price-amount { color: #fff; }
-
-    .price-currency {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-top: 8px;
-      color: var(--muted);
-    }
-    .price-card.featured .price-currency { color: rgba(255,255,255,0.7); }
-
-    .price-period {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-bottom: 28px;
-      font-weight: 600;
-    }
-    .price-card.featured .price-period { color: rgba(255,255,255,0.65); }
-
-    .price-divider {
-      height: 1px;
-      background: var(--border);
-      margin-bottom: 28px;
-    }
-    .price-card.featured .price-divider { background: rgba(255,255,255,0.2); }
-
-    .price-features {
-      list-style: none;
-      flex: 1;
-      margin-bottom: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .price-features li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 0.9rem;
-      color: var(--muted);
-      font-weight: 600;
-      line-height: 1.4;
-    }
-    .price-card.featured .price-features li { color: rgba(255,255,255,0.85); }
-
-    .check {
-      width: 20px; height: 20px;
-      border-radius: 50%;
-      background: var(--red-pale);
-      color: var(--red);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 800;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .price-card.featured .check {
-      background: rgba(255,255,255,0.2);
-      color: #fff;
-    }
-
-    .price-features li.disabled { opacity: 0.35; }
-    .price-features li.disabled .check { background: var(--border); color: var(--muted); }
-
-    .btn-plan {
-      font-family: var(--sans);
-      font-size: 0.92rem;
-      font-weight: 800;
-      padding: 14px;
-      width: 100%;
-      border-radius: 50px;
-      border: 2px solid var(--red);
-      background: transparent;
-      color: var(--red);
-      cursor: pointer;
-      text-decoration: none;
-      text-align: center;
-      display: block;
-      transition: all 0.2s;
-    }
-    .btn-plan:hover { background: var(--red); color: #fff; }
-
-    .price-card.featured .btn-plan {
-      background: #fff;
-      border-color: #fff;
-      color: var(--red);
-    }
-    .price-card.featured .btn-plan:hover {
-      background: var(--red-pale);
-      border-color: var(--red-pale);
-    }
-
-    /* ── AUTH ── */
-    .auth-section {
-      padding: 100px 48px;
-      background: var(--white);
-    }
-
-    .auth-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .auth-left .section-title { font-size: 2.2rem; margin-bottom: 20px; }
-
-    .auth-left p {
-      color: var(--muted);
-      line-height: 1.75;
-      margin-bottom: 32px;
-    }
-
-    .trust-items {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .trust-dot {
-      width: 10px; height: 10px;
-      background: var(--red);
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    /* Auth form panel */
-    .auth-panel {
-      background: var(--bg);
-      border-radius: 28px;
-      padding: 44px;
-      border: 1px solid var(--border);
-    }
-
-    .auth-tabs {
-      display: flex;
-      background: var(--white);
-      border-radius: 50px;
-      padding: 4px;
-      margin-bottom: 36px;
-      border: 1px solid var(--border);
-    }
-
-    .auth-tab {
-      flex: 1;
-      font-family: var(--sans);
-      font-size: 0.88rem;
-      font-weight: 700;
-      padding: 10px;
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      border-radius: 50px;
-      transition: all 0.2s;
-    }
-    .auth-tab.active {
-      background: var(--red);
-      color: #fff;
-    }
-
-    .auth-form { display: flex; flex-direction: column; gap: 16px; }
-
-    .form-group { display: flex; flex-direction: column; gap: 7px; }
-
-    .form-group label {
-      font-family: var(--sans);
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: 0.04em;
-    }
-
-    .form-group input,
-    .form-group select {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      color: var(--text);
-      padding: 12px 16px;
-      font-family: var(--body);
-      font-size: 0.92rem;
-      outline: none;
-      transition: border-color 0.2s;
-      width: 100%;
-    }
-    .form-group input:focus,
-    .form-group select:focus { border-color: var(--red); }
-    .form-group input::placeholder { color: #AAA; }
-
-    .btn-auth {
-      font-family: var(--sans);
-      font-size: 1rem;
-      font-weight: 800;
-      padding: 14px;
-      background: var(--red);
-      color: #fff;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 20px rgba(184,33,58,0.3);
-      margin-top: 4px;
-    }
-    .btn-auth:hover { background: var(--red-dark); }
-
-    .auth-note {
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.5;
-    }
-    .auth-note a { color: var(--red); text-decoration: none; font-weight: 700; }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--red-dark);
-      padding: 50px 50px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-
-    .footer-top{
-      display:grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr; gap:60px;
-      color: --var(--white);
-    }
-    
-    .footer-logo {
-      font-family: var(--sans);
-      font-size: 1.5rem;
-      font-weight: 900;
-      color: var(--white);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .footer-logo img { filter: brightness(0) invert(1); width: 32px; height: auto; }
-
-    .footer-description{
-      max-width:320px;
-      color:#dc9a9a;
-      line-height:1.8;
-      font-size:1.05rem;
-    }
-
-    .footer-column{
-      display:flex;
-      color: var(--white);
-      flex-direction:column;
-      font-family:var(--sans);
-      font-size:1rem;
-      margin-bottom:10px;
-      gap:18px;
-    }
-
-    .footer-bottom{
-      text-align:center;
-      color:#dc9a9a;
-      padding-top:28px;
-
-      font-size:1rem;
-    }
-
-    .footer-tagline {
-      font-size: 0.82rem;
-      color: rgba(235, 235, 235, 0.45);
-      margin-top: 6px;
-    }
-
-    .footer-links {
-      color: var(--white);
-      display: flex;
-      gap: 28px;
-      list-style: none;
-    }
-    .footer-links a {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: rgba(146, 30, 30, 0.5);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: rgba(255, 251, 251, 0.9); }
-
-    /* ── ANIMATIONS ── */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .fade-up.visible { opacity: 1; transform: none; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 960px) {
-      nav { padding: 0 24px; }
-      .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; text-align: center; }
-      .hero-visual { display: none; }
-      .hero-sub { margin: 0 auto 40px; }
-      .hero-actions { justify-content: center; }
-      section, .problem-section, .how-section, .features-section,
-      .pricing-section, .auth-section { padding: 70px 24px; }
-      .problem-grid, .pricing-grid { grid-template-columns: 1fr; }
-      .steps-grid { grid-template-columns: 1fr 1fr; }
-      .steps-grid::before { display: none; }
-      .features-layout, .auth-layout { grid-template-columns: 1fr; }
-      .features-visual { order: -1; }
-      footer { padding: 32px 24px; flex-direction: column; text-align: center; }
-      .pricing-section .pricing-header { text-align: left; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- NAV -->
-  <nav>
-    <a class="nav-logo" href="#">
-      <!-- <img src="pieza-ajedrez.png" alt="Chess Logo"> -->
-     checkmate
-    </a>
-    <ul class="nav-links">
-      <li><a href="#problema">El problema</a></li>
-      <li><a href="#como-funciona">Cómo funciona</a></li>
-      <li><a href="#empresas">Para empresas</a></li>
-      <li><a href="#precios">Precios</a></li>
-    </ul>
-    <div class="nav-cta">
-      <a href="#auth" class="btn-outline">Iniciar sesión</a>
-      <a href="#auth" class="btn-solid">Crear cuenta</a>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero chess-bg">
-    <div class="hero-content">
-      <span class="hero-tag">Tu antivirus de información falsa</span>
-      <h1>
-        Verificá lo que ves<br/>
-        <span>antes de creerlo</span>
-      </h1>
-      <p class="hero-sub">
-        Te ayudamos a detectar contenido falso, manipulado y generado con IA en cuestión de segundos. 
-      </p>
-      <div class="hero-actions">
-        <a href="#auth" class="btn-hero">Empezar gratis →</a>
-        <a href="#como-funciona" class="btn-hero-ghost">Ver cómo funciona ↓</a>
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--body);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* ── CHESS PATTERN BG ── */
+      .chess-bg {
+        background-image: repeating-conic-gradient(
+          var(--chess-light) 0% 25%,
+          var(--chess-dark) 0% 50%
+        );
+        background-size: 150px 150px;
+      }
+
+      /* ── NAV ── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 48px;
+        height: 68px;
+        background: rgba(242, 238, 235, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-logo {
+        font-family: var(--sans);
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: var(--red);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .nav-logo img {
+        width: 28px;
+        height: auto;
+        filter: drop-shadow(0 1px 3px rgba(184, 33, 58, 0.3));
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 50px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        font-family: var(--sans);
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--red);
+      }
+
+      .nav-cta {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .btn-outline {
+        font-family: var(--sans);
+        font-size: 0.88rem;
+        font-weight: 700;
+        padding: 9px 22px;
+        border: 2px solid var(--red);
+        color: var(--red);
+        background: transparent;
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+      .btn-outline:hover {
+        background: var(--red);
+        color: #fff;
+      }
+
+      .btn-solid {
+        font-family: var(--sans);
+        font-size: 0.88rem;
+        font-weight: 800;
+        padding: 9px 22px;
+        background: var(--red);
+        color: #fff;
+        border: 2px solid var(--red);
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+      .btn-solid:hover {
+        background: var(--red-dark);
+        border-color: var(--red-dark);
+      }
+
+      /* ── HERO ── */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 100px 120px 60px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--red-pale);
+        color: var(--red);
+        font-family: var(--sans);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 6px 16px;
+        border-radius: 50px;
+        margin-bottom: 28px;
+      }
+
+      .hero-tag::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        background: var(--red);
+        border-radius: 50%;
+        animation: blink 1.8s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.2;
+        }
+      }
+
+      .hero h1 {
+        font-family: var(--sans);
+        font-size: clamp(2.6rem, 5vw, 4.2rem);
+        font-weight: 900;
+        line-height: 1.08;
+        color: var(--text);
+        margin-bottom: 24px;
+      }
+
+      .hero h1 span {
+        color: var(--red);
+      }
+
+      .hero-sub {
+        font-size: 1.05rem;
+        color: var(--muted);
+        line-height: 1.75;
+        max-width: 560px;
+        margin-bottom: 40px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-hero {
+        font-family: var(--sans);
+        font-size: 1rem;
+        font-weight: 800;
+        padding: 14px 32px;
+        background: var(--red);
+        color: #fff;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s;
+        box-shadow: 0 4px 20px rgba(184, 33, 58, 0.35);
+      }
+      .btn-hero:hover {
+        background: var(--red-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 28px rgba(184, 33, 58, 0.4);
+      }
+
+      .btn-hero-ghost {
+        font-family: var(--sans);
+        font-size: 1rem;
+        font-weight: 700;
+        padding: 14px 28px;
+        background: transparent;
+        color: var(--text);
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .btn-hero-ghost:hover {
+        color: var(--red);
+      }
+
+      /* Hero King illustration */
+      .hero-visual {
+        position: relative;
+        z-index: 50;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .king-wrapper {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .king-bg-circle {
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: rgba(184, 33, 58, 0.25);
+        filter: blur(60px);
+
+        animation: pulseGlow 4s ease-in-out infinite;
+      }
+
+      @keyframes pulseGlow {
+        0% {
+          transform: scale(1);
+          opacity: 0.6;
+        }
+
+        50% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 0.6;
+        }
+      }
+
+      .king-piece-img {
+        width: 320px;
+        height: auto;
+        position: relative;
+        z-index: 2;
+
+        animation: floatKing 4s ease-in-out infinite;
+      }
+
+      @keyframes floatKing {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-18px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      /* ── PROBLEM SECTION ── */
+      .problem-section {
+        padding: 100px 150px;
+        background: var(--white);
+      }
+
+      .section-eyebrow {
+        font-family: var(--sans);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--red);
+        margin-bottom: 16px;
+        display: block;
+      }
+
+      .section-title {
+        font-family: var(--sans);
+        font-size: clamp(1.8rem, 3.5vw, 3rem);
+        font-weight: 900;
+        line-height: 1.1;
+        color: var(--text);
+        margin-bottom: 16px;
+      }
+
+      .section-sub {
+        font-size: 1rem;
+        color: var(--muted);
+        line-height: 1.75;
+        max-width: 560px;
+        margin-bottom: 56px;
+      }
+
+      .problem-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .problem-card {
+        background: var(--bg);
+        border-radius: 20px;
+        padding: 36px 32px;
+        border: 1px solid var(--border);
+        transition: all 0.3s;
+      }
+      .problem-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(184, 33, 58, 0.12);
+        border-color: var(--red-light);
+      }
+
+      .problem-num {
+        font-family: var(--sans);
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: var(--red);
+        line-height: 1;
+        margin-bottom: 12px;
+      }
+
+      .problem-card p {
+        font-size: 0.95rem;
+        color: var(--muted);
+        line-height: 1.7;
+        font-weight: 600;
+      }
+
+      /* ── HOW IT WORKS ── */
+      .how-section {
+        padding: 100px 150px;
+        background: var(--bg);
+      }
+
+      .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+        position: relative;
+        margin-top: 16px;
+      }
+
+      /* connecting line */
+      .steps-grid::before {
+        content: "";
+        position: absolute;
+        top: 42px;
+        left: 12.5%;
+        right: 12.5%;
+        height: 2px;
+        background: linear-gradient(to right, var(--red), var(--red-light));
+        z-index: 0;
+      }
+
+      .step {
+        text-align: center;
+        padding: 0 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .step-circle {
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        background: var(--red);
+        color: #fff;
+        font-family: var(--sans);
+        font-size: 1.6rem;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        box-shadow: 0 6px 24px rgba(184, 33, 58, 0.3);
+        transition: transform 0.3s;
+      }
+
+      .step:hover .step-circle {
+        transform: scale(1.1);
+      }
+
+      .step h3 {
+        font-family: var(--sans);
+        font-size: 1rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+        color: var(--text);
+      }
+
+      .step p {
+        font-size: 0.88rem;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      /* ── B2B FEATURES ── */
+      .features-section {
+        padding: 100px 150px;
+        background: var(--white);
+      }
+
+      .features-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+      }
+
+      .features-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 40px;
+      }
+
+      .feature-item {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        padding: 24px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        transition: all 0.3s;
+        cursor: default;
+      }
+      .feature-item:hover {
+        border-color: var(--red-light);
+        box-shadow: 0 4px 20px rgba(184, 33, 58, 0.1);
+      }
+
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: var(--red-pale);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 1.3rem;
+      }
+
+      .feature-item h4 {
+        font-family: var(--sans);
+        font-size: 0.95rem;
+        font-weight: 800;
+        margin-bottom: 5px;
+        color: var(--text);
+      }
+
+      .feature-item p {
+        font-size: 0.87rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      /* Visual panel */
+      .features-visual {
+        background: var(--red);
+        border-radius: 28px;
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .features-visual::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        height: 200px;
+        background-image: repeating-conic-gradient(
+          rgba(255, 255, 255, 0.06) 0% 25%,
+          transparent 0% 50%
+        );
+        background-size: 40px 40px;
+      }
+
+      .visual-header {
+        font-family: var(--sans);
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .visual-header::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: #4ade80;
+        border-radius: 50%;
+        animation: blink 2s infinite;
+      }
+
+      .visual-title {
+        font-family: var(--sans);
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: #fff;
+        margin-bottom: 8px;
+      }
+
+      .visual-sub {
+        font-size: 0.88rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 32px;
+      }
+
+      .visual-metrics {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .metric-box {
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 14px;
+        padding: 18px;
+      }
+
+      .metric-val {
+        font-family: var(--sans);
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: #fff;
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+
+      .metric-label {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.65);
+        font-weight: 600;
+      }
+
+      .visual-alert {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-left: 3px solid #fbbf24;
+        border-radius: 10px;
+        padding: 14px 16px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .alert-icon {
+        font-size: 1.1rem;
+      }
+
+      .alert-text {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 600;
+        line-height: 1.4;
+      }
+
+      /* ── PRICING ── */
+      .pricing-section {
+        padding: 100px 150px;
+        background: var(--bg);
+      }
+
+      .pricing-section .section-title,
+      .pricing-section .section-sub {
+        max-width: 100%;
+      }
+
+      .pricing-section .section-sub {
+        max-width: 520px;
+      }
+
+      .pricing-header {
+        text-align: center;
+        margin-bottom: 56px;
+      }
+      .pricing-header .section-eyebrow {
+        display: block;
+      }
+      .pricing-header .section-sub {
+        margin: 0 auto;
+      }
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .price-card {
+        background: var(--white);
+        border-radius: 24px;
+        padding: 40px 36px;
+        border: 2px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s;
+      }
+      .price-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+      }
+
+      .price-card.featured {
+        background: var(--red);
+        border-color: var(--red);
+        position: relative;
+      }
+
+      .popular-badge {
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--text);
+        color: #fff;
+        font-family: var(--sans);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 5px 16px;
+        border-radius: 50px;
+        white-space: nowrap;
+      }
+
+      .price-tier {
+        font-family: var(--sans);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 20px;
+      }
+      .price-card.featured .price-tier {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .price-amount {
+        font-family: var(--sans);
+        font-size: 3rem;
+        font-weight: 900;
+        color: var(--text);
+        line-height: 1;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: flex-start;
+        gap: 4px;
+      }
+      .price-card.featured .price-amount {
+        color: #fff;
+      }
+
+      .price-currency {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-top: 8px;
+        color: var(--muted);
+      }
+      .price-card.featured .price-currency {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .price-period {
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-bottom: 28px;
+        font-weight: 600;
+      }
+      .price-card.featured .price-period {
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      .price-divider {
+        height: 1px;
+        background: var(--border);
+        margin-bottom: 28px;
+      }
+      .price-card.featured .price-divider {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .price-features {
+        list-style: none;
+        flex: 1;
+        margin-bottom: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .price-features li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-weight: 600;
+        line-height: 1.4;
+      }
+      .price-card.featured .price-features li {
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      .check {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--red-pale);
+        color: var(--red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: 800;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .price-card.featured .check {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+
+      .price-features li.disabled {
+        opacity: 0.35;
+      }
+      .price-features li.disabled .check {
+        background: var(--border);
+        color: var(--muted);
+      }
+
+      .btn-plan {
+        font-family: var(--sans);
+        font-size: 0.92rem;
+        font-weight: 800;
+        padding: 14px;
+        width: 100%;
+        border-radius: 50px;
+        border: 2px solid var(--red);
+        background: transparent;
+        color: var(--red);
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+        display: block;
+        transition: all 0.2s;
+      }
+      .btn-plan:hover {
+        background: var(--red);
+        color: #fff;
+      }
+
+      .price-card.featured .btn-plan {
+        background: #fff;
+        border-color: #fff;
+        color: var(--red);
+      }
+      .price-card.featured .btn-plan:hover {
+        background: var(--red-pale);
+        border-color: var(--red-pale);
+      }
+
+      /* ── AUTH ── */
+      .auth-section {
+        padding: 100px 48px;
+        background: var(--white);
+      }
+
+      .auth-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .auth-left .section-title {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+      }
+
+      .auth-left p {
+        color: var(--muted);
+        line-height: 1.75;
+        margin-bottom: 32px;
+      }
+
+      .trust-items {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .trust-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .trust-dot {
+        width: 10px;
+        height: 10px;
+        background: var(--red);
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      /* Auth form panel */
+      .auth-panel {
+        background: var(--bg);
+        border-radius: 28px;
+        padding: 44px;
+        border: 1px solid var(--border);
+      }
+
+      .auth-tabs {
+        display: flex;
+        background: var(--white);
+        border-radius: 50px;
+        padding: 4px;
+        margin-bottom: 36px;
+        border: 1px solid var(--border);
+      }
+
+      .auth-tab {
+        flex: 1;
+        font-family: var(--sans);
+        font-size: 0.88rem;
+        font-weight: 700;
+        padding: 10px;
+        background: transparent;
+        border: none;
+        color: var(--muted);
+        cursor: pointer;
+        border-radius: 50px;
+        transition: all 0.2s;
+      }
+      .auth-tab.active {
+        background: var(--red);
+        color: #fff;
+      }
+
+      .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .form-group label {
+        font-family: var(--sans);
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: var(--text);
+        letter-spacing: 0.04em;
+      }
+
+      .form-group input,
+      .form-group select {
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        padding: 12px 16px;
+        font-family: var(--body);
+        font-size: 0.92rem;
+        outline: none;
+        transition: border-color 0.2s;
+        width: 100%;
+      }
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: var(--red);
+      }
+      .form-group input::placeholder {
+        color: #aaa;
+      }
+
+      .btn-auth {
+        font-family: var(--sans);
+        font-size: 1rem;
+        font-weight: 800;
+        padding: 14px;
+        background: var(--red);
+        color: #fff;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 20px rgba(184, 33, 58, 0.3);
+        margin-top: 4px;
+      }
+      .btn-auth:hover {
+        background: var(--red-dark);
+      }
+
+      .auth-note {
+        font-size: 0.75rem;
+        color: var(--muted);
+        text-align: center;
+        line-height: 1.5;
+      }
+      .auth-note a {
+        color: var(--red);
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        background: var(--red-dark);
+        padding: 50px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+
+      .footer-top {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        gap: 60px;
+        color: --var(--white);
+      }
+
+      .footer-logo {
+        font-family: var(--sans);
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: var(--white);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .footer-logo img {
+        filter: brightness(0) invert(1);
+        width: 32px;
+        height: auto;
+      }
+
+      .footer-description {
+        max-width: 320px;
+        color: #dc9a9a;
+        line-height: 1.8;
+        font-size: 1.05rem;
+      }
+
+      .footer-column {
+        display: flex;
+        color: var(--white);
+        flex-direction: column;
+        font-family: var(--sans);
+        font-size: 1rem;
+        margin-bottom: 10px;
+        gap: 18px;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        color: #dc9a9a;
+        padding-top: 28px;
+
+        font-size: 1rem;
+      }
+
+      .footer-tagline {
+        font-size: 0.82rem;
+        color: rgba(235, 235, 235, 0.45);
+        margin-top: 6px;
+      }
+
+      .footer-links {
+        color: var(--white);
+        display: flex;
+        gap: 28px;
+        list-style: none;
+      }
+      .footer-links a {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: rgba(146, 30, 30, 0.5);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: rgba(255, 251, 251, 0.9);
+      }
+
+      /* ── ANIMATIONS ── */
+      .fade-up {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s ease;
+      }
+      .fade-up.visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 960px) {
+        nav {
+          padding: 0 24px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          padding: 100px 24px 60px;
+          text-align: center;
+        }
+        .hero-visual {
+          display: none;
+        }
+        .hero-sub {
+          margin: 0 auto 40px;
+        }
+        .hero-actions {
+          justify-content: center;
+        }
+        section,
+        .problem-section,
+        .how-section,
+        .features-section,
+        .pricing-section,
+        .auth-section {
+          padding: 70px 24px;
+        }
+        .problem-grid,
+        .pricing-grid {
+          grid-template-columns: 1fr;
+        }
+        .steps-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .steps-grid::before {
+          display: none;
+        }
+        .features-layout,
+        .auth-layout {
+          grid-template-columns: 1fr;
+        }
+        .features-visual {
+          order: -1;
+        }
+        footer {
+          padding: 32px 24px;
+          flex-direction: column;
+          text-align: center;
+        }
+        .pricing-section .pricing-header {
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <a class="nav-logo" href="#">
+        <img src="pieza-ajedrez.png" alt="Chess Logo" />
+        checkmate
+      </a>
+      <ul class="nav-links">
+        <li><a href="#problema">El problema</a></li>
+        <li><a href="#como-funciona">Cómo funciona</a></li>
+        <li><a href="#empresas">Para empresas</a></li>
+        <li><a href="#precios">Precios</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="#auth" class="btn-outline">Iniciar sesión</a>
+        <a href="#auth" class="btn-solid">Crear cuenta</a>
       </div>
-    </div>
+    </nav>
 
-    <div class="hero-visual">
-      <div class="king-wrapper">
-        <div class="king-bg-circle"></div>
-        <!-- Imagen de la pieza -->
-        <img 
-          class="king-piece-img"
-          src="pieza-ajedrez.png" 
-          alt="Chess King"
-        >
-      </div>
-    </div>
-  </section>
-
-  <!-- PROBLEMA -->
-  <section id="problema" class="problem-section">
-    <span class="section-eyebrow">// el problema</span>
-    <h2 class="section-title">La verdad está en riesgo.</h2>
-    <p class="section-sub">
-      Un falso rumor hundió las acciones de United Airlines casi un 100%. Noticias falsas sobre figuras políticas se viralizan antes de que alguien las verifique. Tu empresa no puede permitirse ese riesgo.
-    </p>
-
-    <div class="problem-grid fade-up">
-      <div class="problem-card">
-        <div class="problem-num">88%</div>
-        <p>de las personas ve contenido falso con frecuencia en redes sociales y medios digitales.</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-num">9/10</div>
-        <p>empresas ya fueron afectadas por desinformación que dañó su reputación o sus finanzas.</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-num">70%+</div>
-        <p>más rápido se difunden las noticias falsas comparado con las verdaderas, según el MIT.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CÓMO FUNCIONA -->
-  <section id="como-funciona" class="how-section">
-    <span class="section-eyebrow">// cómo funciona</span>
-    <h2 class="section-title">Simple, rápido, definitivo.</h2>
-    <p class="section-sub">Sin configuraciones complejas. En tres pasos tenés una respuesta clara.</p>
-
-    <div class="steps-grid fade-up">
-      <div class="step">
-        <div class="step-circle">1</div>
-        <h3>Subís el contenido</h3>
-        <p>Pegá una URL, subí un archivo o conectá tu sistema vía API. Texto, imagen, audio o video.</p>
-      </div>
-      <div class="step">
-        <div class="step-circle">2</div>
-        <h3>Análisis automático</h3>
-        <p>Nuestro motor analiza patrones de IA, metadatos, coherencia visual y más de 200 señales.</p>
-      </div>
-      <div class="step">
-        <div class="step-circle">3</div>
-        <h3>Reporte al instante</h3>
-        <p>Obtenés un score de veracidad, clasificación del tipo de manipulación y evidencia detallada.</p>
-      </div>
-      <div class="step">
-        <div class="step-circle">4</div>
-        <h3>Monitoreo continuo</h3>
-        <p>Alertas automáticas 24/7 cuando aparece contenido falso relacionado con tu marca.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES B2B -->
-  <section id="empresas" class="features-section">
-    <div class="features-layout">
-      <div>
-        <span class="section-eyebrow">// para empresas · B2B</span>
-        <h2 class="section-title">Protegé tu marca en tiempo real.</h2>
-        <p class="section-sub">
-          Checkmate es la solución que necesitan medios, corporaciones y equipos legales que no pueden darse el lujo de equivocarse.
+    <!-- HERO -->
+    <section class="hero chess-bg">
+      <div class="hero-content">
+        <span class="hero-tag">Tu antivirus de información falsa</span>
+        <h1>
+          Verificá lo que ves<br />
+          <span>antes de creerlo</span>
+        </h1>
+        <p class="hero-sub">
+          Te ayudamos a detectar contenido falso, manipulado y generado con IA
+          en cuestión de segundos.
         </p>
+        <div class="hero-actions">
+          <a href="#auth" class="btn-hero">Empezar gratis</a>
+          <a href="#como-funciona" class="btn-hero-ghost">Ver cómo funciona</a>
+        </div>
+      </div>
 
-        <div class="features-list fade-up">
-          <div class="feature-item">
-            <div class="feature-icon">🛡️</div>
-            <div>
-              <h4>Monitoreo de marca 24/7</h4>
-              <p>Vigilancia continua de tu marca en redes y medios. Detectamos contenido falso sobre tu empresa antes de que se viralice.</p>
+    </section>
+
+    <!-- PROBLEMA -->
+    <section id="problema" class="problem-section">
+      <span class="section-eyebrow">el problema</span>
+      <h2 class="section-title">La verdad está en riesgo.</h2>
+      <p class="section-sub">
+        Un falso rumor hundió las acciones de United Airlines casi un 100%.
+        Noticias falsas sobre figuras políticas se viralizan antes de que
+        alguien las verifique. Tu empresa no puede permitirse ese riesgo.
+      </p>
+
+      <div class="problem-grid fade-up">
+        <div class="problem-card">
+          <div class="problem-num">88%</div>
+          <p>
+            de las personas ve contenido falso con frecuencia en redes sociales
+            y medios digitales.
+          </p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-num">9/10</div>
+          <p>
+            empresas ya fueron afectadas por desinformación que dañó su
+            reputación o sus finanzas.
+          </p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-num">70%+</div>
+          <p>
+            más rápido se difunden las noticias falsas comparado con las
+            verdaderas, según el MIT.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section id="como-funciona" class="how-section">
+      <span class="section-eyebrow">cómo funciona</span>
+      <h2 class="section-title">Simple, rápido, definitivo.</h2>
+      <p class="section-sub">
+        Sin configuraciones complejas. En tres pasos tenés una respuesta clara.
+      </p>
+
+      <div class="steps-grid fade-up">
+        <div class="step">
+          <div class="step-circle">1</div>
+          <h3>Subís el contenido</h3>
+          <p>
+            Pegá una URL, subí un archivo o conectá tu sistema vía API. Texto,
+            imagen, audio o video.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-circle">2</div>
+          <h3>Análisis automático</h3>
+          <p>
+            Nuestro motor analiza patrones de IA, metadatos, coherencia visual y
+            más de 200 señales.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-circle">3</div>
+          <h3>Reporte al instante</h3>
+          <p>
+            Obtenés un score de veracidad, clasificación del tipo de
+            manipulación y evidencia detallada.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-circle">4</div>
+          <h3>Monitoreo continuo</h3>
+          <p>
+            Alertas automáticas 24/7 cuando aparece contenido falso relacionado
+            con tu marca.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES B2B -->
+    <section id="empresas" class="features-section">
+      <div class="features-layout">
+        <div>
+          <span class="section-eyebrow">para empresas · B2B</span>
+          <h2 class="section-title">Protegé tu marca en tiempo real.</h2>
+          <p class="section-sub">
+            Checkmate es la solución que necesitan medios, corporaciones y
+            equipos legales que no pueden darse el lujo de equivocarse.
+          </p>
+
+          <div class="features-list fade-up">
+            <div class="feature-item">
+              <div class="feature-icon">🛡️</div>
+              <div>
+                <h4>Monitoreo de marca 24/7</h4>
+                <p>
+                  Vigilancia continua de tu marca en redes y medios. Detectamos
+                  contenido falso sobre tu empresa antes de que se viralice.
+                </p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">⚡</div>
+              <div>
+                <h4>Alertas en tiempo real</h4>
+                <p>
+                  Notificaciones instantáneas vía email, Slack o API cuando se
+                  detecta contenido sospechoso vinculado a tu organización.
+                </p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">📊</div>
+              <div>
+                <h4>Análisis y reportes exportables</h4>
+                <p>
+                  Dashboard centralizado para tu equipo, historial completo de
+                  análisis y reportes en PDF o JSON para compliance y auditoría.
+                </p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">🔗</div>
+              <div>
+                <h4>API & integraciones</h4>
+                <p>
+                  Conectá Checkmate a tus herramientas existentes. API REST
+                  documentada con SDKs para los principales lenguajes.
+                </p>
+              </div>
             </div>
           </div>
-          <div class="feature-item">
-            <div class="feature-icon">⚡</div>
-            <div>
-              <h4>Alertas en tiempo real</h4>
-              <p>Notificaciones instantáneas vía email, Slack o API cuando se detecta contenido sospechoso vinculado a tu organización.</p>
+        </div>
+
+        <!-- Visual mock dashboard -->
+        <div class="features-visual fade-up">
+          <div class="visual-header">Dashboard · En vivo</div>
+          <div class="visual-title">Reputación de marca</div>
+          <div class="visual-sub">
+            Últimas 24 horas · Actualizado hace 3 min
+          </div>
+
+          <div class="visual-metrics">
+            <div class="metric-box">
+              <div class="metric-val">247</div>
+              <div class="metric-label">Análisis realizados</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val">3</div>
+              <div class="metric-label">Alertas activas</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val">98.4%</div>
+              <div class="metric-label">Precisión</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-val">1.8s</div>
+              <div class="metric-label">Tiempo promedio</div>
             </div>
           </div>
-          <div class="feature-item">
-            <div class="feature-icon">📊</div>
-            <div>
-              <h4>Análisis y reportes exportables</h4>
-              <p>Dashboard centralizado para tu equipo, historial completo de análisis y reportes en PDF o JSON para compliance y auditoría.</p>
-            </div>
-          </div>
-          <div class="feature-item">
-            <div class="feature-icon">🔗</div>
-            <div>
-              <h4>API & integraciones</h4>
-              <p>Conectá Checkmate a tus herramientas existentes. API REST documentada con SDKs para los principales lenguajes.</p>
+
+          <div class="visual-alert">
+            <span class="alert-icon">⚠️</span>
+            <div class="alert-text">
+              Contenido potencialmente falso detectado en Twitter/X mencionando
+              tu marca. Confianza: 94%.
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Visual mock dashboard -->
-      <div class="features-visual fade-up">
-        <div class="visual-header">Dashboard · En vivo</div>
-        <div class="visual-title">Reputación de marca</div>
-        <div class="visual-sub">Últimas 24 horas · Actualizado hace 3 min</div>
-
-        <div class="visual-metrics">
-          <div class="metric-box">
-            <div class="metric-val">247</div>
-            <div class="metric-label">Análisis realizados</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">3</div>
-            <div class="metric-label">Alertas activas</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">98.4%</div>
-            <div class="metric-label">Precisión</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val">1.8s</div>
-            <div class="metric-label">Tiempo promedio</div>
-          </div>
-        </div>
-
-        <div class="visual-alert">
-          <span class="alert-icon">⚠️</span>
-          <div class="alert-text">
-            Contenido potencialmente falso detectado en Twitter/X mencionando tu marca. Confianza: 94%.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRECIOS -->
-  <section id="precios" class="pricing-section">
-    <div class="pricing-header">
-      <span class="section-eyebrow">// planes B2B</span>
-      <h2 class="section-title">Precios claros, sin sorpresas.</h2>
-      <p class="section-sub">Todos los planes incluyen dashboard, soporte y actualizaciones automáticas de modelos de IA detectados.</p>
-    </div>
-
-    <div class="pricing-grid fade-up">
-
-      <!-- STARTER -->
-      <div class="price-card">
-        <div class="price-tier">Starter</div>
-        <div class="price-amount">
-          <span class="price-currency">USD</span>149
-        </div>
-        <div class="price-period">/ mes · hasta 3 usuarios</div>
-        <div class="price-divider"></div>
-        <ul class="price-features">
-          <li><span class="check">✓</span> 500 análisis por mes</li>
-          <li><span class="check">✓</span> Detección de texto con IA</li>
-          <li><span class="check">✓</span> Análisis de imágenes</li>
-          <li><span class="check">✓</span> Dashboard básico</li>
-          <li><span class="check">✓</span> Soporte por email</li>
-          <li class="disabled"><span class="check">–</span> API access</li>
-          <li class="disabled"><span class="check">–</span> Monitoreo de marca 24/7</li>
-          <li class="disabled"><span class="check">–</span> Alertas en tiempo real</li>
-        </ul>
-        <a href="#auth" class="btn-plan">Comenzar</a>
+    <!-- PRECIOS -->
+    <section id="precios" class="pricing-section">
+      <div class="pricing-header">
+        <span class="section-eyebrow">planes B2B</span>
+        <h2 class="section-title">Precios claros, sin sorpresas.</h2>
+        <p class="section-sub">
+          Todos los planes incluyen dashboard, soporte y actualizaciones
+          automáticas de modelos de IA detectados.
+        </p>
       </div>
 
-      <!-- PRO -->
-      <div class="price-card featured">
-        <span class="popular-badge">Más popular</span>
-        <div class="price-tier">Pro</div>
-        <div class="price-amount">
-          <span class="price-currency">USD</span>499
-        </div>
-        <div class="price-period">/ mes · hasta 15 usuarios</div>
-        <div class="price-divider"></div>
-        <ul class="price-features">
-          <li><span class="check">✓</span> 5.000 análisis por mes</li>
-          <li><span class="check">✓</span> Detección de texto con IA</li>
-          <li><span class="check">✓</span> Análisis de imágenes y video</li>
-          <li><span class="check">✓</span> Dashboard avanzado</li>
-          <li><span class="check">✓</span> Soporte prioritario</li>
-          <li><span class="check">✓</span> API access completo</li>
-          <li><span class="check">✓</span> Monitoreo de marca 24/7</li>
-          <li><span class="check">✓</span> Alertas en tiempo real</li>
-        </ul>
-        <a href="#auth" class="btn-plan">Comenzar</a>
-      </div>
-
-      <!-- ENTERPRISE -->
-      <div class="price-card">
-        <div class="price-tier">Enterprise</div>
-        <div class="price-amount" style="font-size:2rem; margin-top:8px;">A medida</div>
-        <div class="price-period">Usuarios y análisis ilimitados</div>
-        <div class="price-divider"></div>
-        <ul class="price-features">
-          <li><span class="check">✓</span> Análisis ilimitados</li>
-          <li><span class="check">✓</span> Todo lo del plan Pro</li>
-          <li><span class="check">✓</span> SLA garantizado 99.9%</li>
-          <li><span class="check">✓</span> Soporte dedicado 24/7</li>
-          <li><span class="check">✓</span> Reportes personalizados</li>
-          <li><span class="check">✓</span> SSO / SAML</li>
-          <li><span class="check">✓</span> Opción on-premise</li>
-          <li><span class="check">✓</span> Onboarding dedicado</li>
-        </ul>
-        <a href="mailto:ventas@checkmate.ai" class="btn-plan">Hablar con ventas</a>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- AUTH -->
-  <section id="auth" class="auth-section">
-    <div class="auth-layout">
-      <div class="auth-left">
-        <span class="section-eyebrow">// acceso</span>
-        <h2 class="section-title">Tu equipo ya puede<br/>empezar hoy.</h2>
-        <p>Creá tu cuenta en menos de 2 minutos y accedé al dashboard con todo el poder de Checkmate para proteger tu empresa.</p>
-
-        <div class="trust-items">
-          <div class="trust-item">
-            <span class="trust-dot"></span>
-            Sin tarjeta de crédito para el plan Starter
+      <div class="pricing-grid fade-up">
+        <!-- STARTER -->
+        <div class="price-card">
+          <div class="price-tier">Starter</div>
+          <div class="price-amount">
+            <span class="price-currency">USD</span>149
           </div>
-          <div class="trust-item">
-            <span class="trust-dot"></span>
-            Onboarding guiado incluido en todos los planes
-          </div>
-          <div class="trust-item">
-            <span class="trust-dot"></span>
-            Cancelás cuando quieras, sin penalidades
-          </div>
-          <div class="trust-item">
-            <span class="trust-dot"></span>
-            Datos alojados en servidores seguros certificados
-          </div>
-        </div>
-      </div>
-
-      <div class="auth-panel">
-        <div class="auth-tabs">
-          <button class="auth-tab active" onclick="switchTab('signup', this)">Crear cuenta</button>
-          <button class="auth-tab" onclick="switchTab('login', this)">Iniciar sesión</button>
+          <div class="price-period">/ mes · hasta 3 usuarios</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li><span class="check">✓</span> 500 análisis por mes</li>
+            <li><span class="check">✓</span> Detección de texto con IA</li>
+            <li><span class="check">✓</span> Análisis de imágenes</li>
+            <li><span class="check">✓</span> Dashboard básico</li>
+            <li><span class="check">✓</span> Soporte por email</li>
+            <li class="disabled"><span class="check">–</span> API access</li>
+            <li class="disabled">
+              <span class="check">–</span> Monitoreo de marca 24/7
+            </li>
+            <li class="disabled">
+              <span class="check">–</span> Alertas en tiempo real
+            </li>
+          </ul>
+          <a href="#auth" class="btn-plan">Comenzar</a>
         </div>
 
-        <!-- SIGNUP -->
-        <div id="tab-signup">
-          <div class="auth-form">
-            <div class="form-group">
-              <label>Nombre completo</label>
-              <input type="text" placeholder="Ana García" />
+        <!-- PRO -->
+        <div class="price-card featured">
+          <span class="popular-badge">Más popular</span>
+          <div class="price-tier">Pro</div>
+          <div class="price-amount">
+            <span class="price-currency">USD</span>499
+          </div>
+          <div class="price-period">/ mes · hasta 15 usuarios</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li><span class="check">✓</span> 5.000 análisis por mes</li>
+            <li><span class="check">✓</span> Detección de texto con IA</li>
+            <li><span class="check">✓</span> Análisis de imágenes y video</li>
+            <li><span class="check">✓</span> Dashboard avanzado</li>
+            <li><span class="check">✓</span> Soporte prioritario</li>
+            <li><span class="check">✓</span> API access completo</li>
+            <li><span class="check">✓</span> Monitoreo de marca 24/7</li>
+            <li><span class="check">✓</span> Alertas en tiempo real</li>
+          </ul>
+          <a href="#auth" class="btn-plan">Comenzar</a>
+        </div>
+
+        <!-- ENTERPRISE -->
+        <div class="price-card">
+          <div class="price-tier">Enterprise</div>
+          <div class="price-amount" style="font-size: 2rem; margin-top: 8px">
+            A medida
+          </div>
+          <div class="price-period">Usuarios y análisis ilimitados</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li><span class="check">✓</span> Análisis ilimitados</li>
+            <li><span class="check">✓</span> Todo lo del plan Pro</li>
+            <li><span class="check">✓</span> SLA garantizado 99.9%</li>
+            <li><span class="check">✓</span> Soporte dedicado 24/7</li>
+            <li><span class="check">✓</span> Reportes personalizados</li>
+            <li><span class="check">✓</span> SSO / SAML</li>
+            <li><span class="check">✓</span> Opción on-premise</li>
+            <li><span class="check">✓</span> Onboarding dedicado</li>
+          </ul>
+          <a href="mailto:ventas@checkmate.ai" class="btn-plan"
+            >Hablar con ventas</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTH -->
+    <section id="auth" class="auth-section">
+      <div class="auth-layout">
+        <div class="auth-left">
+          <span class="section-eyebrow">acceso</span>
+          <h2 class="section-title">Tu equipo ya puede<br />empezar hoy.</h2>
+          <p>
+            Creá tu cuenta en menos de 2 minutos y accedé al dashboard con todo
+            el poder de Checkmate para proteger tu empresa.
+          </p>
+
+          <div class="trust-items">
+            <div class="trust-item">
+              <span class="trust-dot"></span>
+              Sin tarjeta de crédito para el plan Starter
             </div>
-            <div class="form-group">
-              <label>Email corporativo</label>
-              <input type="email" placeholder="ana@empresa.com" />
+            <div class="trust-item">
+              <span class="trust-dot"></span>
+              Onboarding guiado incluido en todos los planes
             </div>
-            <div class="form-group">
-              <label>Empresa</label>
-              <input type="text" placeholder="Nombre de tu organización" />
+            <div class="trust-item">
+              <span class="trust-dot"></span>
+              Cancelás cuando quieras, sin penalidades
             </div>
-            <div class="form-group">
-              <label>Plan</label>
-              <select>
-                <option>Starter — USD 149/mes</option>
-                <option selected>Pro — USD 499/mes</option>
-                <option>Enterprise — Consultar</option>
-              </select>
+            <div class="trust-item">
+              <span class="trust-dot"></span>
+              Datos alojados en servidores seguros certificados
             </div>
-            <div class="form-group">
-              <label>Contraseña</label>
-              <input type="password" placeholder="Mínimo 8 caracteres" />
-            </div>
-            <button class="btn-auth" onclick="handleAuth(event,'signup')">
-              Crear cuenta → Ir al dashboard
+          </div>
+        </div>
+
+        <div class="auth-panel">
+          <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchTab('signup', this)">
+              Crear cuenta
             </button>
-            <p class="auth-note">
-              Al registrarte aceptás los <a href="#">Términos de servicio</a> y la <a href="#">Política de privacidad</a>.
-            </p>
-          </div>
-        </div>
-
-        <!-- LOGIN -->
-        <div id="tab-login" style="display:none">
-          <div class="auth-form">
-            <div class="form-group">
-              <label>Email</label>
-              <input type="email" placeholder="ana@empresa.com" />
-            </div>
-            <div class="form-group">
-              <label>Contraseña</label>
-              <input type="password" placeholder="Tu contraseña" />
-            </div>
-            <button class="btn-auth" onclick="handleAuth(event,'login')">
-              Iniciar sesión → Ir al dashboard
+            <button class="auth-tab" onclick="switchTab('login', this)">
+              Iniciar sesión
             </button>
-            <p class="auth-note"><a href="#">¿Olvidaste tu contraseña?</a></p>
+          </div>
+
+          <!-- SIGNUP -->
+          <div id="tab-signup">
+            <div class="auth-form">
+              <div class="form-group">
+                <label>Nombre completo</label>
+                <input type="text" placeholder="Ana García" />
+              </div>
+              <div class="form-group">
+                <label>Email corporativo</label>
+                <input type="email" placeholder="ana@empresa.com" />
+              </div>
+              <div class="form-group">
+                <label>Empresa</label>
+                <input type="text" placeholder="Nombre de tu organización" />
+              </div>
+              <div class="form-group">
+                <label>Plan</label>
+                <select>
+                  <option>Starter — USD 149/mes</option>
+                  <option selected>Pro — USD 499/mes</option>
+                  <option>Enterprise — Consultar</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" placeholder="Mínimo 8 caracteres" />
+              </div>
+              <button class="btn-auth" onclick="handleAuth(event, 'signup')">
+                Crear cuenta
+              </button>
+              <p class="auth-note">
+                Al registrarte aceptás los
+                <a href="#">Términos de servicio</a> y la
+                <a href="#">Política de privacidad</a>.
+              </p>
+            </div>
+          </div>
+
+          <!-- LOGIN -->
+          <div id="tab-login" style="display: none">
+            <div class="auth-form">
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="ana@empresa.com" />
+              </div>
+              <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" placeholder="Tu contraseña" />
+              </div>
+              <button class="btn-auth" onclick="handleAuth(event, 'login')">
+                Iniciar sesión → Ir al dashboard
+              </button>
+              <p class="auth-note"><a href="#">¿Olvidaste tu contraseña?</a></p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- FOOTER -->
-  <!-- <footer>
+    <!-- FOOTER -->
+    <!-- <footer>
     <div>
       <div class="footer-logo">
         <img src="pieza-ajedrez.png" alt="Chess Logo">
@@ -1341,87 +1574,94 @@
     </ul>
   </footer> -->
 
-  <footer class="footer">
-    <div class="footer-top">
-      <div class="footer-brand">
+    <footer class="footer">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="pieza-ajedrez.png" alt="Chess Logo" />
+            <span>CheckMate</span>
+          </div>
 
-        <div class="footer-logo">
-          <img src="pieza-ajedrez.png" alt="Chess Logo">
-          <span>CheckMate</span>
+          <p class="footer-description">Tu antivirus de información falsa.</p>
         </div>
 
-        <p class="footer-description">
-          Tu antivirus de información falsa. 
-        </p>
+        <!-- Columna -->
+        <div class="footer-column">
+          Producto
+          <a href="#como-funciona">Cómo funciona</a>
+          <a href="#precios">Precios</a>
+        </div>
 
+        <!-- Columna -->
+        <div class="footer-column">
+          Empresa
+          <a href="#problema">Nosotros</a>
+          <a href="#">Contacto</a>
+        </div>
+
+        <!-- Columna -->
+        <div class="footer-column">
+          Legal
+          <a href="#">Privacidad</a>
+          <a href="#">Términos</a>
+        </div>
       </div>
-
-      <!-- Columna -->
-      <div class="footer-column">
-        Producto
-        <a href="#como-funciona">Cómo funciona</a>
-        <a href="#precios">Precios</a>
+      <!-- Bottom -->
+      <div class="footer-bottom">
+        © 2026 CheckMate. Todos los derechos reservados.
       </div>
+    </footer>
 
-      <!-- Columna -->
-      <div class="footer-column">
-        Empresa
-        <a href="#problema">Nosotros</a>
-        <a href="#">Contacto</a>
-      </div>
-
-      <!-- Columna -->
-      <div class="footer-column">
-        Legal
-        <a href="#">Privacidad</a>
-        <a href="#">Términos</a>
-      </div>
-
-    </div>
-    <!-- Bottom -->
-    <div class="footer-bottom">
-      © 2026 CheckMate. Todos los derechos reservados.
-    </div>
-  </footer>
-
-  <script>
-    function switchTab(tab, btn) {
-      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tab-signup').style.display = tab === 'signup' ? 'block' : 'none';
-      document.getElementById('tab-login').style.display  = tab === 'login'  ? 'block' : 'none';
-    }
-
-    function handleAuth(e, type) {
-      e.preventDefault();
-      // TODO: conectar con tu backend de auth (Firebase, Auth0, Supabase, etc.)
-      alert((type === 'signup' ? 'Cuenta creada' : 'Sesión iniciada') + ' correctamente.\nRedirigiendo al dashboard...');
-      // window.location.href = '/dashboard';
-    }
-
-    // Scroll fade-in
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-  </script>
-
-  <script>
-    function handleAuth(event, type) {
-      event.preventDefault();
-
-      // Simulación de autenticación
-      if (type === "signup") {
-        alert("Cuenta creada correctamente");
-      } else {
-        alert("Inicio de sesión exitoso");
+    <script>
+      function switchTab(tab, btn) {
+        document
+          .querySelectorAll(".auth-tab")
+          .forEach((t) => t.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("tab-signup").style.display =
+          tab === "signup" ? "block" : "none";
+        document.getElementById("tab-login").style.display =
+          tab === "login" ? "block" : "none";
       }
 
-      // Redirección al dashboard
-      window.location.href = "dashboard.html";
-    }
-  </script>
+      function handleAuth(e, type) {
+        e.preventDefault();
+        // TODO: conectar con tu backend de auth (Firebase, Auth0, Supabase, etc.)
+        alert(
+          (type === "signup" ? "Cuenta creada" : "Sesión iniciada") +
+            " correctamente.\nRedirigiendo al dashboard...",
+        );
+        // window.location.href = '/dashboard';
+      }
 
+      // Scroll fade-in
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document
+        .querySelectorAll(".fade-up")
+        .forEach((el) => observer.observe(el));
+    </script>
 
-</body>
+    <script>
+      function handleAuth(event, type) {
+        event.preventDefault();
+
+        // Simulación de autenticación
+        if (type === "signup") {
+          alert("Cuenta creada correctamente");
+        } else {
+          alert("Inicio de sesión exitoso");
+        }
+
+        // Redirección al dashboard
+        window.location.href = "dashboard.html";
+      }
+    </script>
+  </body>
 </html>
