@@ -41,16 +41,7 @@
 
     body{
         font-family: var(--sans);
-
-        background-image:
-            repeating-conic-gradient(
-            var(--chess-light) 0% 25%,
-            var(--chess-dark) 0% 50%
-            );
-
-        background-size: 150px 150px;
         background-color: var(--bg);
-
         color: var(--text);
     }
 
@@ -82,24 +73,16 @@
       margin-bottom:50px;
     }
 
-    .logo-icon{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-
-      background:var(--red-pale);
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      color:var(--red);
-      font-size:22px;
-      font-weight:700;
+    .logo img{
+      width:28px;
+      height:auto;
+      filter:drop-shadow(0 1px 3px rgba(184,33,58,0.3));
     }
 
     .logo h2{
       font-size:22px;
+      color:var(--red);
+      font-weight:900;
     }
 
     .nav-links{
@@ -279,6 +262,8 @@
 
       box-shadow:
       0 10px 40px rgba(0,0,0,0.05);
+
+      margin-bottom:30px;
     }
 
     table{
@@ -323,6 +308,88 @@
       color:#b42339;
     }
 
+    /* TOP FUENTES */
+
+    .sources-card {
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(20px);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    }
+
+    .sources-card h2 {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .sources-subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 28px;
+    }
+
+    .sources-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .source-item {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .source-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .source-icon {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--red);
+      width: 30px;
+      height: 30px;
+      background: var(--red-pale);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .source-name {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .source-pct {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--red);
+      min-width: 36px;
+      text-align: right;
+    }
+
+    .source-bar {
+      height: 7px;
+      background: var(--red-pale);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .source-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--red), var(--red-light));
+      border-radius: 999px;
+      transition: width 1s ease;
+    }
+
     /* RESPONSIVE */
 
     @media(max-width:1000px){
@@ -357,8 +424,8 @@
   <aside class="sidebar">
 
     <div class="logo">
-      <div class="logo-icon">♟</div>
-      <h2>CheckMate</h2>
+      <img src="pieza-ajedrez.png" alt="Chess Logo" />
+      <h2>checkmate</h2>
     </div>
 
     <div class="nav-links">
@@ -401,7 +468,6 @@
             <div class="metric">24</div>
           </div>
 
-          <div class="card-icon">✓</div>
         </div>
 
         <div class="metric-sub">
@@ -416,7 +482,6 @@
             <div class="metric">3</div>
           </div>
 
-          <div class="card-icon">⚠</div>
         </div>
 
         <div class="metric-sub">
@@ -431,7 +496,6 @@
             <div class="metric">2</div>
           </div>
 
-          <div class="card-icon">🔔</div>
         </div>
 
         <div class="metric-sub">
@@ -446,7 +510,6 @@
             <div class="metric">98%</div>
           </div>
 
-          <div class="card-icon">📈</div>
         </div>
 
         <div class="metric-sub">
@@ -528,6 +591,71 @@
 
       </table>
 
+    </section>
+
+    <!-- TOP FUENTES -->
+
+    <section class="sources-card">
+      <h2>Top Fuentes</h2>
+      <p class="sources-subtitle">Plataformas con más contenido falso detectado</p>
+
+      <div class="sources-list">
+
+        <div class="source-item">
+          <div class="source-info">
+            <span class="source-icon">X</span>
+            <span class="source-name">X (Twitter)</span>
+            <span class="source-pct">38%</span>
+          </div>
+          <div class="source-bar"><div class="source-fill" style="width:38%"></div></div>
+        </div>
+
+        <div class="source-item">
+          <div class="source-info">
+            <span class="source-icon">IG</span>
+            <span class="source-name">Instagram</span>
+            <span class="source-pct">27%</span>
+          </div>
+          <div class="source-bar"><div class="source-fill" style="width:27%"></div></div>
+        </div>
+
+        <div class="source-item">
+          <div class="source-info">
+            <span class="source-icon">TT</span>
+            <span class="source-name">TikTok</span>
+            <span class="source-pct">17%</span>
+          </div>
+          <div class="source-bar"><div class="source-fill" style="width:17%"></div></div>
+        </div>
+
+        <div class="source-item">
+          <div class="source-info">
+            <span class="source-icon">FB</span>
+            <span class="source-name">Facebook</span>
+            <span class="source-pct">11%</span>
+          </div>
+          <div class="source-bar"><div class="source-fill" style="width:11%"></div></div>
+        </div>
+
+        <div class="source-item">
+          <div class="source-info">
+            <span class="source-icon">Rd</span>
+            <span class="source-name">Reddit</span>
+            <span class="source-pct">5%</span>
+          </div>
+          <div class="source-bar"><div class="source-fill" style="width:5%"></div></div>
+        </div>
+
+        <div class="source-item">
+          <div class="source-info">
+            <span class="source-icon">—</span>
+            <span class="source-name">Otros</span>
+            <span class="source-pct">2%</span>
+          </div>
+          <div class="source-bar"><div class="source-fill" style="width:2%"></div></div>
+        </div>
+
+      </div>
     </section>
 
   </main>
