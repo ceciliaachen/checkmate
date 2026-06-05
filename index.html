@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>checkmate — Tu antivirus de información falsa</title>
+    <title>checkmate — El antivirus de información falsa para empresas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap"
@@ -203,22 +203,18 @@
         color: var(--red);
       }
 
-      /* Hero title letter animation */
-      .hero-char {
-        display: inline-block;
-        opacity: 0;
-        animation: charReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+      /* Hero title animation */
+      .hero h1 {
+        animation: charReveal 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
       }
 
       @keyframes charReveal {
         from {
           opacity: 0;
-          transform: translateY(70px);
-          filter: blur(12px);
+          filter: blur(20px);
         }
         to {
           opacity: 1;
-          transform: translateY(0);
           filter: blur(0);
         }
       }
@@ -542,7 +538,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 60px;
-        align-items: center;
+        align-items: start;
       }
 
       .features-list {
@@ -601,20 +597,7 @@
         padding: 40px;
         position: relative;
         overflow: hidden;
-      }
-
-      .features-visual::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 200px;
-        height: 200px;
-        background-image: repeating-conic-gradient(
-          rgba(255, 255, 255, 0.06) 0% 25%,
-          transparent 0% 50%
-        );
-        background-size: 40px 40px;
+        margin-top: 36px;
       }
 
       .visual-header {
@@ -1164,7 +1147,7 @@
       }
       .industry-badges {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 12px;
       }
       .industry-badge {
@@ -1289,7 +1272,9 @@
 
       <div class="hero-content">
         <h1>checkmate</h1>
-        <div class="hero-badge">tu antivirus de información falsa</div>
+        <div class="hero-badge">
+          El antivirus de información falsa para empresas
+        </div>
         <div class="hero-actions">
           <a href="dashboard.html" class="btn-hero">Empezar gratis</a>
           <a href="#como-funciona" class="btn-hero-ghost"
@@ -1389,78 +1374,64 @@
 
     <!-- FEATURES B2B -->
     <section id="empresas" class="features-section">
-      <div class="features-layout">
-        <div>
-          <span class="section-eyebrow">para empresas</span>
-          <h2 class="section-title">Protegé tu marca en tiempo real.</h2>
-          <p class="section-sub">
-            Checkmate es la solución que necesitan medios, corporaciones y
-            equipos legales que no pueden darse el lujo de equivocarse.
-          </p>
+      <span class="section-eyebrow">para empresas</span>
+      <h2 class="section-title">Protegé tu marca en tiempo real.</h2>
+      <p class="section-sub">
+        Checkmate es la solución que necesitan medios, corporaciones y equipos
+        legales que no pueden darse el lujo de equivocarse.
+      </p>
 
-          <div class="industry-row">
-            <div class="industry-row-label">Sectores que protegemos</div>
-            <div class="industry-badges">
-              <div class="industry-badge">
-                <span class="industry-badge-icon">📰</span> Medios & Periodismo
-              </div>
-              <div class="industry-badge">
-                <span class="industry-badge-icon">🏦</span> Servicios
-                Financieros
-              </div>
-              <div class="industry-badge">
-                <span class="industry-badge-icon">🏥</span> Salud & Farmacéutica
-              </div>
-              <div class="industry-badge">
-                <span class="industry-badge-icon">🏛️</span> Gobierno & Sector
-                Público
-              </div>
-              <div class="industry-badge">
-                <span class="industry-badge-icon">⚖️</span> Equipos Legales
-              </div>
+      <div class="industry-row">
+        <div class="industry-row-label">Sectores que protegemos</div>
+        <div class="industry-badges">
+          <div class="industry-badge">Medios & Periodismo</div>
+          <div class="industry-badge">Servicios Financieros</div>
+          <div class="industry-badge">Salud & Farmacéutica</div>
+          <div class="industry-badge">Gobierno & Sector Público</div>
+          <div class="industry-badge">Equipos Legales</div>
+        </div>
+      </div>
+
+      <div class="features-layout">
+        <div class="features-list fade-up">
+          <div class="feature-item">
+            <div class="feature-icon">🛡️</div>
+            <div>
+              <h4>Monitoreo de marca 24/7</h4>
+              <p>
+                Vigilancia continua de tu marca en redes y medios. Detectamos
+                contenido falso sobre tu empresa antes de que se viralice.
+              </p>
             </div>
           </div>
-
-          <div class="features-list fade-up">
-            <div class="feature-item">
-              <div class="feature-icon">🛡️</div>
-              <div>
-                <h4>Monitoreo de marca 24/7</h4>
-                <p>
-                  Vigilancia continua de tu marca en redes y medios. Detectamos
-                  contenido falso sobre tu empresa antes de que se viralice.
-                </p>
-              </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div>
+              <h4>Alertas en tiempo real</h4>
+              <p>
+                Notificaciones instantáneas vía email, Slack o API cuando se
+                detecta contenido sospechoso vinculado a tu organización.
+              </p>
             </div>
-            <div class="feature-item">
-              <div class="feature-icon">⚡</div>
-              <div>
-                <h4>Alertas en tiempo real</h4>
-                <p>
-                  Notificaciones instantáneas vía email, Slack o API cuando se
-                  detecta contenido sospechoso vinculado a tu organización.
-                </p>
-              </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📊</div>
+            <div>
+              <h4>Análisis y reportes exportables</h4>
+              <p>
+                Dashboard centralizado para tu equipo, historial completo de
+                análisis y reportes en PDF o JSON para compliance y auditoría.
+              </p>
             </div>
-            <div class="feature-item">
-              <div class="feature-icon">📊</div>
-              <div>
-                <h4>Análisis y reportes exportables</h4>
-                <p>
-                  Dashboard centralizado para tu equipo, historial completo de
-                  análisis y reportes en PDF o JSON para compliance y auditoría.
-                </p>
-              </div>
-            </div>
-            <div class="feature-item">
-              <div class="feature-icon">🔗</div>
-              <div>
-                <h4>API & integraciones</h4>
-                <p>
-                  Conectá Checkmate a tus herramientas existentes. API REST
-                  documentada con SDKs para los principales lenguajes.
-                </p>
-              </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔗</div>
+            <div>
+              <h4>API & integraciones</h4>
+              <p>
+                Conectá Checkmate a tus herramientas existentes. API REST
+                documentada con SDKs para los principales lenguajes.
+              </p>
             </div>
           </div>
         </div>
@@ -1504,6 +1475,7 @@
     </section>
 
     <!-- PRECIOS -->
+
     <section id="precios" class="pricing-section">
       <div class="pricing-header">
         <span class="section-eyebrow">planes B2B</span>
@@ -1613,7 +1585,9 @@
             <span>CheckMate</span>
           </div>
 
-          <p class="footer-description">Tu antivirus de información falsa.</p>
+          <p class="footer-description">
+            El antivirus de información falsa para empresas.
+          </p>
         </div>
 
         <!-- Columna -->
@@ -1676,20 +1650,6 @@
     </script>
 
     <script>
-      // Split hero title into animated letters
-      (function () {
-        const h1 = document.querySelector(".hero h1");
-        if (!h1) return;
-        const text = h1.textContent.trim();
-        h1.innerHTML = text
-          .split("")
-          .map(
-            (ch, i) =>
-              `<span class="hero-char" style="animation-delay:${(0.08 + i * 0.065).toFixed(3)}s">${ch}</span>`,
-          )
-          .join("");
-      })();
-
       // Chess board: squares light up in turns
       (function () {
         const canvas = document.getElementById("chessCanvas");
