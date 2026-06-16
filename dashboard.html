@@ -1,746 +1,927 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>CheckMate Dashboard</title>
+    <title>CheckMate Dashboard</title>
 
-  <!-- FONT -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- CHART JS -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- CHART JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <style>
+    <style>
+      :root {
+        --red: #b8213a;
+        --red-dark: #8c1a2c;
+        --red-light: #d94060;
+        --red-pale: #f5e8eb;
 
-    :root {
-      --red:       #B8213A;
-      --red-dark:  #8C1A2C;
-      --red-light: #D94060;
-      --red-pale:  #F5E8EB;
+        --bg: #f2eeeb;
+        --white: #ffffff;
+        --text: #1a1a1a;
+        --muted: #6b6b6b;
+        --border: #ddd5cf;
 
-      --bg:        #F2EEEB;
-      --white:     #FFFFFF;
-      --text:      #1A1A1A;
-      --muted:     #6B6B6B;
-      --border:    #DDD5CF;
+        --chess-light: #ede8e3;
+        --chess-dark: rgba(184, 33, 58, 0.08);
 
-      --chess-light: #EDE8E3;
-      --chess-dark:  rgba(184,33,58,0.08);
+        --sans: "Poppins", sans-serif;
+      }
 
-      --sans:      'Poppins', sans-serif;
-    }
+      html {
+        scroll-behavior: smooth;
+      }
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    body{
+      body {
         font-family: var(--sans);
         background-color: var(--bg);
         color: var(--text);
-    }
-
-    .dashboard{
-      display:flex;
-      min-height:100vh;
-    }
-
-    /* SIDEBAR */
-
-    .sidebar{
-      width:260px;
-      background:rgba(255,255,255,0.7);
-      backdrop-filter:blur(18px);
-
-      border-right:1px solid var(--border);
-
-      padding:32px 22px;
-
-      position:fixed;
-      height:100vh;
-    }
-
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:12px;
-
-      margin-bottom:50px;
-    }
-
-    .logo img{
-      width:28px;
-      height:auto;
-      filter:drop-shadow(0 1px 3px rgba(184,33,58,0.3));
-    }
-
-    .logo h2{
-      font-size:22px;
-      color:var(--red);
-      font-weight:900;
-    }
-
-    .nav-links{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .nav-links a{
-      text-decoration:none;
-      color:var(--muted);
-
-      padding:14px 16px;
-      border-radius:16px;
-
-      transition:.3s;
-      font-weight:500;
-    }
-
-    .nav-links a:hover,
-    .nav-links .active{
-      background:var(--red);
-      color:white;
-      box-shadow:0 10px 30px rgba(184,33,58,0.18);
-    }
-
-    /* MAIN */
-
-    .main{
-      margin-left:260px;
-      flex:1;
-
-      padding:40px;
-    }
-
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-
-      margin-bottom:35px;
-    }
-
-    .topbar h1{
-      font-size:34px;
-      margin-bottom:5px;
-    }
-
-    .topbar p{
-      color:var(--muted);
-    }
-
-    .user{
-      background:white;
-      padding:12px 18px;
-      border-radius:18px;
-      border:1px solid var(--border);
-
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .avatar{
-      width:40px;
-      height:40px;
-      border-radius:50%;
-      background:var(--red);
-    }
-
-    /* STATS */
-
-    .stats-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:22px;
-
-      margin-bottom:30px;
-    }
-
-    .card{
-      background:rgba(255,255,255,0.75);
-      backdrop-filter:blur(20px);
-
-      border:1px solid rgba(255,255,255,0.6);
-
-      border-radius:28px;
-
-      padding:24px;
-
-      box-shadow:
-      0 10px 40px rgba(0,0,0,0.05);
-
-      transition:.3s;
-    }
-
-    .card:hover{
-      transform:translateY(-4px);
-      border-color:rgba(184,33,58,0.3);
-    }
-
-    .card-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-
-      margin-bottom:18px;
-    }
-
-    .card-icon{
-      width:52px;
-      height:52px;
-      border-radius:18px;
-
-      background:var(--red-pale);
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      font-size:22px;
-    }
-
-    .card h3{
-      color:var(--muted);
-      font-size:14px;
-      font-weight:500;
-    }
-
-    .metric{
-      font-size:38px;
-      font-weight:700;
-    }
-
-    .metric-sub{
-      margin-top:8px;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    /* CHARTS */
-
-    .charts{
-      display:grid;
-      grid-template-columns:2fr 1fr;
-      gap:24px;
-
-      margin-bottom:30px;
-    }
-
-    .chart-card{
-      background:rgba(255,255,255,0.75);
-      backdrop-filter:blur(20px);
-
-      border-radius:28px;
-
-      padding:28px;
-
-      box-shadow:
-      0 10px 40px rgba(0,0,0,0.05);
-    }
-
-    .chart-card h2{
-      margin-bottom:25px;
-      font-size:22px;
-    }
-
-    /* TABLE */
-
-    .table-card{
-      background:rgba(255,255,255,0.75);
-      backdrop-filter:blur(20px);
-
-      border-radius:28px;
-
-      padding:28px;
-
-      box-shadow:
-      0 10px 40px rgba(0,0,0,0.05);
-
-      margin-bottom:30px;
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-    }
-
-    th{
-      text-align:left;
-      padding-bottom:16px;
-
-      color:var(--muted);
-      font-size:14px;
-      font-weight:500;
-    }
-
-    td{
-      padding:18px 0;
-      border-top:1px solid var(--border);
-    }
-
-    .status{
-      padding:8px 14px;
-      border-radius:999px;
-
-      font-size:13px;
-      font-weight:600;
-    }
-
-    .verified{
-      background:#e7f7ee;
-      color:#0f8a43;
-    }
-
-    .warning{
-      background:#fff4dd;
-      color:#b7791f;
-    }
-
-    .danger{
-      background:#ffe5e8;
-      color:#b42339;
-    }
-
-    /* TOP FUENTES */
-
-    .sources-card {
-      background: rgba(255,255,255,0.75);
-      backdrop-filter: blur(20px);
-      border-radius: 28px;
-      padding: 28px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-    }
-
-    .sources-card h2 {
-      font-size: 22px;
-      margin-bottom: 6px;
-    }
-
-    .sources-subtitle {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 28px;
-    }
-
-    .sources-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .source-item {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .source-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .source-icon {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--red);
-      width: 30px;
-      height: 30px;
-      background: var(--red-pale);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      letter-spacing: -0.02em;
-    }
-
-    .source-name {
-      flex: 1;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .source-pct {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--red);
-      min-width: 36px;
-      text-align: right;
-    }
-
-    .source-bar {
-      height: 7px;
-      background: var(--red-pale);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .source-fill {
-      height: 100%;
-      background: linear-gradient(to right, var(--red), var(--red-light));
-      border-radius: 999px;
-      transition: width 1s ease;
-    }
-
-    /* RESPONSIVE */
-
-    @media(max-width:1000px){
-
-      .charts{
-        grid-template-columns:1fr;
       }
 
-    }
-
-    @media(max-width:850px){
-
-      .sidebar{
-        display:none;
+      .dashboard {
+        display: flex;
+        min-height: 100vh;
       }
 
-      .main{
-        margin-left:0;
+      /* SIDEBAR */
+
+      .sidebar {
+        width: 260px;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(18px);
+
+        border-right: 1px solid var(--border);
+
+        padding: 32px 22px;
+
+        position: fixed;
+        height: 100vh;
       }
 
-    }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        margin-bottom: 50px;
+      }
+
+      .logo img {
+        width: 28px;
+        height: auto;
+        filter: drop-shadow(0 1px 3px rgba(184, 33, 58, 0.3));
+      }
+
+      .logo h2 {
+        font-size: 22px;
+        color: var(--red);
+        font-weight: 900;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--muted);
+
+        padding: 14px 16px;
+        border-radius: 16px;
+
+        transition: 0.3s;
+        font-weight: 500;
+      }
+
+      .nav-links a:hover,
+      .nav-links .active {
+        background: var(--red);
+        color: white;
+        box-shadow: 0 10px 30px rgba(184, 33, 58, 0.18);
+      }
+
+      /* MAIN */
+
+      .main {
+        margin-left: 260px;
+        flex: 1;
+
+        padding: 40px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+
+        margin-bottom: 35px;
+      }
+
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .topbar h1 {
+        font-size: 34px;
+        margin-bottom: 5px;
+      }
+
+      .topbar p {
+        color: var(--muted);
+      }
+
+      .user {
+        background: white;
+        padding: 12px 18px;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--red);
+      }
+
+      /* STATS */
 
-  </style>
-</head>
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 22px;
 
-<body>
+        margin-bottom: 30px;
+      }
 
-<div class="dashboard">
+      .card {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(20px);
 
-  <!-- SIDEBAR -->
+        border: 1px solid rgba(255, 255, 255, 0.6);
 
-  <aside class="sidebar">
+        border-radius: 28px;
 
-    <div class="logo">
-      <img src="pieza-ajedrez.png" alt="Chess Logo" />
-      <h2>checkmate</h2>
-    </div>
+        padding: 24px;
 
-    <div class="nav-links">
-      <a href="#" class="active">Dashboard</a>
-      <a href="#">Analytics</a>
-      <a href="#">Verificaciones</a>
-      <a href="#">Alertas</a>
-      <a href="#">Configuración</a>
-      <a href="index.html">Cerrar sesión</a>
-    </div>
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
 
-  </aside>
+        transition: 0.3s;
+      }
 
-  <!-- MAIN -->
+      .card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(184, 33, 58, 0.3);
+      }
 
-  <main class="main">
+      .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-    <div class="topbar">
+        margin-bottom: 18px;
+      }
 
-      <div>
-        <h1>Dashboard</h1>
-        <p>Monitorea contenido y detecta desinformación en tiempo real.</p>
-      </div>
+      .card-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 18px;
 
-      <div class="user">
-        <div class="avatar"></div>
-        <span>comms@acme-corp.com</span>
-      </div>
+        background: var(--red-pale);
 
-    </div>
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    <!-- STATS -->
+        font-size: 22px;
+      }
 
-    <section class="stats-grid">
+      .card h3 {
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 500;
+      }
 
-      <div class="card">
-        <div class="card-top">
-          <div>
-            <h3>Verificaciones Hoy</h3>
-            <div class="metric">24</div>
-          </div>
+      .metric {
+        font-size: 38px;
+        font-weight: 700;
+      }
 
-        </div>
+      .metric-sub {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 14px;
+      }
 
-        <div class="metric-sub">
-          +12% vs ayer
-        </div>
-      </div>
+      /* CHARTS */
 
-      <div class="card">
-        <div class="card-top">
-          <div>
-            <h3>Contenido Falso</h3>
-            <div class="metric">3</div>
-          </div>
-
-        </div>
-
-        <div class="metric-sub">
-          Detectado esta semana
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div>
-            <h3>Alertas Activas</h3>
-            <div class="metric">2</div>
-          </div>
-
-        </div>
-
-        <div class="metric-sub">
-          Requieren atención
-        </div>
-      </div>
+      .charts {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 24px;
 
-      <div class="card">
-        <div class="card-top">
-          <div>
-            <h3>Precisión</h3>
-            <div class="metric">98%</div>
-          </div>
-
-        </div>
-
-        <div class="metric-sub">
-          Tasa de detección
-        </div>
-      </div>
-
-    </section>
-
-    <!-- CHARTS -->
-
-    <section class="charts">
-
-      <div class="chart-card">
-        <h2>Actividad Semanal</h2>
-
-        <canvas id="lineChart"></canvas>
-      </div>
-
-      <div class="chart-card">
-        <h2>Tipos Detectados</h2>
-
-        <canvas id="pieChart"></canvas>
-      </div>
-
-    </section>
-
-    <!-- TABLE -->
-
-    <section class="table-card">
-
-      <h2 style="margin-bottom:22px;">
-        Verificaciones recientes
-      </h2>
-
-      <table>
-
-        <thead>
-          <tr>
-            <th>Contenido</th>
-            <th>Estado</th>
-            <th>Confianza</th>
-            <th>Fecha</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>Tweet viral: "CEO dimite tras escándalo financiero"</td>
-            <td><span class="status danger">Desinformación</span></td>
-            <td>96%</td>
-            <td>Hace 18 min</td>
-          </tr>
-          <tr>
-            <td>Comunicado de prensa — resultados Q2 2026</td>
-            <td><span class="status verified">Verificado</span></td>
-            <td>99%</td>
-            <td>Hace 1h</td>
-          </tr>
-          <tr>
-            <td>Video en TikTok sobre retiro de producto</td>
-            <td><span class="status warning">Manipulado</span></td>
-            <td>88%</td>
-            <td>Hace 3h</td>
-          </tr>
-          <tr>
-            <td>Artículo: fusión con competidor confirmada</td>
-            <td><span class="status verified">Verificado</span></td>
-            <td>94%</td>
-            <td>Hace 5h</td>
-          </tr>
-          <tr>
-            <td>Hilo de Reddit — supuesta filtración interna</td>
-            <td><span class="status danger">Generado por IA</span></td>
-            <td>91%</td>
-            <td>Hace 1 día</td>
-          </tr>
-        </tbody>
-
-      </table>
-
-    </section>
-
-    <!-- TOP FUENTES -->
-
-    <section class="sources-card">
-      <h2>Top Fuentes</h2>
-      <p class="sources-subtitle">Plataformas con más contenido falso detectado</p>
-
-      <div class="sources-list">
-
-        <div class="source-item">
-          <div class="source-info">
-            <span class="source-icon">X</span>
-            <span class="source-name">X (Twitter)</span>
-            <span class="source-pct">38%</span>
-          </div>
-          <div class="source-bar"><div class="source-fill" style="width:38%"></div></div>
-        </div>
-
-        <div class="source-item">
-          <div class="source-info">
-            <span class="source-icon">IG</span>
-            <span class="source-name">Instagram</span>
-            <span class="source-pct">27%</span>
-          </div>
-          <div class="source-bar"><div class="source-fill" style="width:27%"></div></div>
-        </div>
-
-        <div class="source-item">
-          <div class="source-info">
-            <span class="source-icon">TT</span>
-            <span class="source-name">TikTok</span>
-            <span class="source-pct">17%</span>
-          </div>
-          <div class="source-bar"><div class="source-fill" style="width:17%"></div></div>
-        </div>
-
-        <div class="source-item">
-          <div class="source-info">
-            <span class="source-icon">FB</span>
-            <span class="source-name">Facebook</span>
-            <span class="source-pct">11%</span>
-          </div>
-          <div class="source-bar"><div class="source-fill" style="width:11%"></div></div>
-        </div>
-
-        <div class="source-item">
-          <div class="source-info">
-            <span class="source-icon">Rd</span>
-            <span class="source-name">Reddit</span>
-            <span class="source-pct">5%</span>
-          </div>
-          <div class="source-bar"><div class="source-fill" style="width:5%"></div></div>
-        </div>
-
-        <div class="source-item">
-          <div class="source-info">
-            <span class="source-icon">—</span>
-            <span class="source-name">Otros</span>
-            <span class="source-pct">2%</span>
-          </div>
-          <div class="source-bar"><div class="source-fill" style="width:2%"></div></div>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
-</div>
-
-<script>
-
-  // LINE CHART
-
-  new Chart(document.getElementById('lineChart'), {
-
-    type: 'line',
-
-    data: {
-
-      labels: ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],
-
-      datasets: [{
-
-        label:'Verificaciones',
-
-        data:[12,19,14,22,18,27,24],
-
-        borderColor:'#B8213A',
-
-        backgroundColor:'rgba(184,33,58,0.12)',
-
-        tension:0.4,
-
-        fill:true
-
-      }]
-    },
-
-    options: {
-
-      responsive:true,
-
-      plugins:{
-        legend:{
-          display:false
+        margin-bottom: 30px;
+      }
+
+      .chart-card {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(20px);
+
+        border-radius: 28px;
+
+        padding: 28px;
+
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+      }
+
+      .chart-card h2 {
+        margin-bottom: 25px;
+        font-size: 22px;
+      }
+
+      /* TABLE */
+
+      .table-card {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(20px);
+
+        border-radius: 28px;
+
+        padding: 28px;
+
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+
+        margin-bottom: 30px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th {
+        text-align: left;
+        padding-bottom: 16px;
+
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      td {
+        padding: 18px 0;
+        border-top: 1px solid var(--border);
+      }
+
+      .status {
+        padding: 8px 14px;
+        border-radius: 999px;
+
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .verified {
+        background: #e7f7ee;
+        color: #0f8a43;
+      }
+
+      .warning {
+        background: #fff4dd;
+        color: #b7791f;
+      }
+
+      .danger {
+        background: #ffe5e8;
+        color: #b42339;
+      }
+
+      /* TOP FUENTES */
+
+      .sources-card {
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(20px);
+        border-radius: 28px;
+        padding: 28px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+      }
+
+      .sources-card h2 {
+        font-size: 22px;
+        margin-bottom: 6px;
+      }
+
+      .sources-subtitle {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 28px;
+      }
+
+      .sources-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .source-item {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .source-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .source-icon {
+        font-size: 11px;
+        font-weight: 800;
+        color: var(--red);
+        width: 30px;
+        height: 30px;
+        background: var(--red-pale);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        letter-spacing: -0.02em;
+      }
+
+      .source-name {
+        flex: 1;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .source-pct {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--red);
+        min-width: 36px;
+        text-align: right;
+      }
+
+      .source-bar {
+        height: 7px;
+        background: var(--red-pale);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .source-fill {
+        height: 100%;
+        background: linear-gradient(to right, var(--red), var(--red-light));
+        border-radius: 999px;
+        transition: width 1s ease;
+      }
+
+      /* BELL NOTIFICATION */
+
+      .notif-wrap {
+        position: relative;
+        background: white;
+        padding: 12px 14px;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+      }
+
+      .bell-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        border-radius: 12px;
+        transition: background 0.2s;
+      }
+
+      .bell-btn:hover {
+        background: var(--red-pale);
+      }
+
+      .bell-btn svg {
+        width: 22px;
+        height: 22px;
+        fill: var(--red);
+      }
+
+      .notif-badge {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 9px;
+        height: 9px;
+        background: var(--red);
+        border-radius: 50%;
+        border: 2px solid white;
+      }
+
+      .notif-dropdown {
+        display: none;
+        position: fixed;
+        top: 90px;
+        right: 40px;
+        width: 340px;
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.14);
+        z-index: 200;
+        overflow: hidden;
+      }
+
+      .notif-dropdown.open {
+        display: block;
+      }
+
+      .notif-header {
+        padding: 16px 20px 12px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .notif-header span {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .notif-count {
+        background: var(--red);
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 999px;
+      }
+
+      .notif-list {
+        max-height: 340px;
+        overflow-y: auto;
+      }
+
+      .notif-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+        cursor: pointer;
+      }
+
+      .notif-item:last-child {
+        border-bottom: none;
+      }
+
+      .notif-item:hover {
+        background: var(--red-pale);
+      }
+
+      .notif-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-top: 5px;
+      }
+
+      .notif-dot.red {
+        background: var(--red);
+      }
+      .notif-dot.orange {
+        background: #e07c2e;
+      }
+      .notif-dot.green {
+        background: #0f8a43;
+      }
+
+      .notif-text {
+        flex: 1;
+        font-size: 13px;
+        line-height: 1.4;
+        color: var(--text);
+      }
+
+      .notif-time {
+        font-size: 11px;
+        color: var(--muted);
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 1000px) {
+        .charts {
+          grid-template-columns: 1fr;
         }
       }
 
-    }
+      @media (max-width: 850px) {
+        .sidebar {
+          display: none;
+        }
 
-  });
+        .main {
+          margin-left: 0;
+        }
+      }
+    </style>
+  </head>
 
-  // PIE CHART
+  <body>
+    <div class="dashboard">
+      <!-- SIDEBAR -->
 
-  new Chart(document.getElementById('pieChart'), {
+      <aside class="sidebar">
+        <div class="logo">
+          <img src="pieza-ajedrez.png" alt="Chess Logo" />
+          <h2>checkmate</h2>
+        </div>
 
-    type:'doughnut',
+        <div class="nav-links">
+          <a href="#" class="active">Dashboard</a>
+          <a href="#actividad-reciente">Actividad reciente</a>
+          <a href="#">Verificaciones</a>
+          <a href="#">Alertas</a>
+          <a href="#">Configuración</a>
+          <a href="index.html">Cerrar sesión</a>
+        </div>
+      </aside>
 
-    data:{
+      <!-- MAIN -->
 
-      labels:[
-        'Verificado',
-        'Manipulado',
-        'IA'
-      ],
+      <main class="main">
+        <div class="topbar">
+          <div>
+            <h1>Dashboard</h1>
+            <p>Monitorea contenido y detecta desinformación en tiempo real.</p>
+          </div>
 
-      datasets:[{
+          <div class="topbar-right">
+            <div class="notif-wrap">
+              <button class="bell-btn" id="bellBtn" aria-label="Notificaciones">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6V11c0-3.07-1.64-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"
+                  />
+                </svg>
+                <span class="notif-badge"></span>
+              </button>
 
-        data:[65,20,15],
+              <div class="notif-dropdown" id="notifDropdown">
+                <div class="notif-header">
+                  <span>Notificaciones</span>
+                  <span class="notif-count">3 nuevas</span>
+                </div>
+                <div class="notif-list">
+                  <div class="notif-item">
+                    <span class="notif-dot red"></span>
+                    <span class="notif-text"
+                      >Tweet viral detectado: "CEO dimite tras escándalo
+                      financiero" — Desinformación con 96% de confianza</span
+                    >
+                    <span class="notif-time">18 min</span>
+                  </div>
+                  <div class="notif-item">
+                    <span class="notif-dot orange"></span>
+                    <span class="notif-text"
+                      >Video en TikTok sobre retiro de producto — Contenido
+                      manipulado (88%)</span
+                    >
+                    <span class="notif-time">3h</span>
+                  </div>
+                  <div class="notif-item">
+                    <span class="notif-dot red"></span>
+                    <span class="notif-text"
+                      >Hilo de Reddit con supuesta filtración interna — Generado
+                      por IA (91%)</span
+                    >
+                    <span class="notif-time">1 día</span>
+                  </div>
+                  <div class="notif-item">
+                    <span class="notif-dot green"></span>
+                    <span class="notif-text"
+                      >Comunicado de prensa Q2 2026 verificado correctamente
+                      (99%)</span
+                    >
+                    <span class="notif-time">1h</span>
+                  </div>
+                  <div class="notif-item">
+                    <span class="notif-dot green"></span>
+                    <span class="notif-text"
+                      >Artículo sobre fusión con competidor — Verificado
+                      (94%)</span
+                    >
+                    <span class="notif-time">5h</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        backgroundColor:[
-          '#B8213A',
-          '#D94060',
-          '#F5C7D0'
-        ],
+            <div class="user">
+              <div class="avatar"></div>
+              <span>comms@acme-corp.com</span>
+            </div>
+          </div>
+        </div>
 
-        borderWidth:0
+        <!-- STATS -->
 
-      }]
-    },
+        <section class="stats-grid">
+          <div class="card">
+            <div class="card-top">
+              <div>
+                <h3>Verificaciones Hoy</h3>
+                <div class="metric">24</div>
+              </div>
+            </div>
 
-    options:{
-      responsive:true
-    }
+            <div class="metric-sub">+12% vs ayer</div>
+          </div>
 
-  });
+          <div class="card">
+            <div class="card-top">
+              <div>
+                <h3>Contenido Falso</h3>
+                <div class="metric">3</div>
+              </div>
+            </div>
 
-</script>
+            <div class="metric-sub">Detectado esta semana</div>
+          </div>
 
-</body>
+          <div class="card">
+            <div class="card-top">
+              <div>
+                <h3>Alertas Activas</h3>
+                <div class="metric">2</div>
+              </div>
+            </div>
+
+            <div class="metric-sub">Requieren atención</div>
+          </div>
+
+          <div class="card">
+            <div class="card-top">
+              <div>
+                <h3>Precisión</h3>
+                <div class="metric">98%</div>
+              </div>
+            </div>
+
+            <div class="metric-sub">Tasa de detección</div>
+          </div>
+        </section>
+
+        <!-- CHARTS -->
+
+        <section class="charts">
+          <div class="chart-card">
+            <h2>Actividad Semanal</h2>
+
+            <canvas id="lineChart"></canvas>
+          </div>
+
+          <div class="chart-card">
+            <h2>Tipos Detectados</h2>
+
+            <canvas id="pieChart"></canvas>
+          </div>
+        </section>
+
+        <!-- TABLE -->
+
+        <section class="table-card" id="actividad-reciente">
+          <h2 style="margin-bottom: 22px">Actividad reciente</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Contenido</th>
+                <th>Estado</th>
+                <th>Confianza</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Tweet viral: "CEO dimite tras escándalo financiero"</td>
+                <td><span class="status danger">Desinformación</span></td>
+                <td>96%</td>
+                <td>Hace 18 min</td>
+              </tr>
+              <tr>
+                <td>Comunicado de prensa — resultados Q2 2026</td>
+                <td><span class="status verified">Verificado</span></td>
+                <td>99%</td>
+                <td>Hace 1h</td>
+              </tr>
+              <tr>
+                <td>Video en TikTok sobre retiro de producto</td>
+                <td><span class="status warning">Manipulado</span></td>
+                <td>88%</td>
+                <td>Hace 3h</td>
+              </tr>
+              <tr>
+                <td>Artículo: fusión con competidor confirmada</td>
+                <td><span class="status verified">Verificado</span></td>
+                <td>94%</td>
+                <td>Hace 5h</td>
+              </tr>
+              <tr>
+                <td>Hilo de Reddit — supuesta filtración interna</td>
+                <td><span class="status danger">Generado por IA</span></td>
+                <td>91%</td>
+                <td>Hace 1 día</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- TOP FUENTES -->
+
+        <section class="sources-card">
+          <h2>Top Fuentes</h2>
+          <p class="sources-subtitle">
+            Plataformas con más contenido falso detectado
+          </p>
+
+          <div class="sources-list">
+            <div class="source-item">
+              <div class="source-info">
+                <span class="source-name">X (Twitter)</span>
+                <span class="source-pct">38%</span>
+              </div>
+              <div class="source-bar">
+                <div class="source-fill" style="width: 38%"></div>
+              </div>
+            </div>
+
+            <div class="source-item">
+              <div class="source-info">
+                <span class="source-name">Instagram</span>
+                <span class="source-pct">27%</span>
+              </div>
+              <div class="source-bar">
+                <div class="source-fill" style="width: 27%"></div>
+              </div>
+            </div>
+
+            <div class="source-item">
+              <div class="source-info">
+                <span class="source-name">TikTok</span>
+                <span class="source-pct">17%</span>
+              </div>
+              <div class="source-bar">
+                <div class="source-fill" style="width: 17%"></div>
+              </div>
+            </div>
+
+            <div class="source-item">
+              <div class="source-info">
+                <span class="source-name">Facebook</span>
+                <span class="source-pct">11%</span>
+              </div>
+              <div class="source-bar">
+                <div class="source-fill" style="width: 11%"></div>
+              </div>
+            </div>
+
+            <div class="source-item">
+              <div class="source-info">
+                <span class="source-name">Reddit</span>
+                <span class="source-pct">5%</span>
+              </div>
+              <div class="source-bar">
+                <div class="source-fill" style="width: 5%"></div>
+              </div>
+            </div>
+
+            <div class="source-item">
+              <div class="source-info">
+                <span class="source-name">Otros</span>
+                <span class="source-pct">2%</span>
+              </div>
+              <div class="source-bar">
+                <div class="source-fill" style="width: 2%"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // BELL DROPDOWN
+
+      const bellBtn = document.getElementById("bellBtn");
+      const notifDropdown = document.getElementById("notifDropdown");
+
+      bellBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        notifDropdown.classList.toggle("open");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!notifDropdown.contains(e.target)) {
+          notifDropdown.classList.remove("open");
+        }
+      });
+
+      // LINE CHART
+
+      new Chart(document.getElementById("lineChart"), {
+        type: "line",
+
+        data: {
+          labels: ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+
+          datasets: [
+            {
+              label: "Verificaciones",
+
+              data: [12, 19, 14, 22, 18, 27, 24],
+
+              borderColor: "#B8213A",
+
+              backgroundColor: "rgba(184,33,58,0.12)",
+
+              tension: 0.4,
+
+              fill: true,
+            },
+          ],
+        },
+
+        options: {
+          responsive: true,
+
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+        },
+      });
+
+      // PIE CHART
+
+      new Chart(document.getElementById("pieChart"), {
+        type: "doughnut",
+
+        data: {
+          labels: ["Verificado", "Manipulado", "IA"],
+
+          datasets: [
+            {
+              data: [65, 20, 15],
+
+              backgroundColor: ["#B8213A", "#D94060", "#F5C7D0"],
+
+              borderWidth: 0,
+            },
+          ],
+        },
+
+        options: {
+          responsive: true,
+        },
+      });
+    </script>
+  </body>
 </html>
