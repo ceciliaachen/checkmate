@@ -251,19 +251,29 @@
       }
 
       .hero-badge {
-        display: inline-block;
-        background: rgba(0, 0, 0, 0.04);
-        border: 1px solid rgba(0, 0, 0, 0.12);
-        color: var(--muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, rgba(184,33,58,0.10) 0%, rgba(184,33,58,0.04) 100%);
+        border: 1px solid rgba(184,33,58,0.30);
+        color: var(--red);
         font-family: var(--sans);
-        font-size: 0.92rem;
-        font-weight: 500;
-        padding: 11px 26px;
-        border-radius: 6px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        padding: 10px 22px;
+        border-radius: 100px;
         margin-bottom: 52px;
-        letter-spacing: 0.01em;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
         backdrop-filter: blur(8px);
+        box-shadow: 0 2px 12px rgba(184,33,58,0.10);
         animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.95s both;
+      }
+
+      .hero-badge::before {
+        content: "▸";
+        font-size: 0.75rem;
+        opacity: 0.8;
       }
 
       .hero-actions {
@@ -1273,7 +1283,7 @@
       <div class="hero-content">
         <h1>checkmate</h1>
         <div class="hero-badge">
-          El antivirus de información falsa para empresas
+          El antivirus de información falsa
         </div>
         <div class="hero-actions">
           <a href="dashboard.html" class="btn-hero">Empezar gratis</a>
@@ -1286,16 +1296,10 @@
 
     <!-- PROBLEMA -->
     <section id="problema" class="problem-section">
-      <span class="section-eyebrow">el problema</span>
+      <span class="section-eyebrow">punto de dolor</span>
       <h2 class="section-title">
-        Un rumor falso puede<br />destruir años de trabajo.
+        La verificación es lenta.<br />El daño, inmediato.
       </h2>
-      <p class="section-sub">
-        Un tweet falso hundió las acciones de United Airlines casi un 100% en
-        minutos. Tu CMO, tu equipo legal y tu directorio no pueden esperar a que
-        el daño ya esté hecho — necesitan saberlo primero.
-      </p>
-
       <div class="problem-grid fade-up">
         <div class="problem-card">
           <div class="problem-num">$1.3B</div>
@@ -1333,40 +1337,36 @@
       <span class="section-eyebrow">cómo funciona</span>
       <h2 class="section-title">Simple, rápido, definitivo.</h2>
       <p class="section-sub">
-        Sin configuraciones complejas. En tres pasos tenés una respuesta clara.
+        Sin configuraciones complejas. En cuatro pasos tenés una respuesta clara.
       </p>
 
       <div class="steps-grid fade-up">
         <div class="step">
           <div class="step-circle">1</div>
-          <h3>Subís el contenido</h3>
+          <h3>Monitoreo</h3>
           <p>
-            Pegá una URL, subí un archivo o conectá tu sistema vía API. Texto,
-            imagen, audio o video.
+            Rastrea en tiempo real un ecosistema amplio de fuentes digitales
           </p>
         </div>
         <div class="step">
           <div class="step-circle">2</div>
-          <h3>Análisis automático</h3>
+          <h3>Detección</h3>
           <p>
-            Nuestro motor analiza patrones de IA, metadatos, coherencia visual y
-            más de 200 señales.
+            Identifica contenido relacionado con la empresa 
           </p>
         </div>
         <div class="step">
           <div class="step-circle">3</div>
-          <h3>Reporte al instante</h3>
+          <h3>Scoring de riesgo </h3>
           <p>
-            Obtenés un score de veracidad, clasificación del tipo de
-            manipulación y evidencia detallada.
+            Analiza el contendio y asigna una probabilidad de veracidad
           </p>
         </div>
         <div class="step">
           <div class="step-circle">4</div>
-          <h3>Monitoreo continuo</h3>
+          <h3>Alerta</h3>
           <p>
-            Alertas automáticas 24/7 cuando aparece contenido falso relacionado
-            con tu marca.
+            Notifica amenazas para actuar antes de que se viralicen
           </p>
         </div>
       </div>
