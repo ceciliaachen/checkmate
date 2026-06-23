@@ -542,6 +542,56 @@
         margin-top: 2px;
       }
 
+      /* MOBILE NAV BAR */
+      .mobile-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(18px);
+        border-top: 1px solid var(--border);
+        padding: 10px 0 env(safe-area-inset-bottom, 10px);
+      }
+
+      .mobile-nav-links {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .mobile-nav-links a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 12px;
+        transition: 0.2s;
+      }
+
+      .mobile-nav-links a.active {
+        color: var(--red);
+      }
+
+      .mobile-nav-links a svg {
+        width: 22px;
+        height: 22px;
+        fill: currentColor;
+      }
+
+      /* TABLE SCROLL */
+      .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
       /* RESPONSIVE */
 
       @media (max-width: 1000px) {
@@ -550,13 +600,99 @@
         }
       }
 
-      @media (max-width: 850px) {
+      @media (max-width: 768px) {
+        body {
+          overflow-x: hidden;
+        }
+
         .sidebar {
           display: none;
         }
 
+        .mobile-nav {
+          display: block;
+        }
+
         .main {
           margin-left: 0;
+          padding: 20px 16px 90px;
+        }
+
+        .topbar {
+          margin-bottom: 20px;
+        }
+
+        .topbar h1 {
+          font-size: 22px;
+          margin-bottom: 2px;
+        }
+
+        .topbar p {
+          font-size: 13px;
+        }
+
+        .user span {
+          display: none;
+        }
+
+        .user {
+          padding: 10px 12px;
+        }
+
+        .notif-dropdown {
+          right: 16px;
+          left: 16px;
+          width: auto;
+          top: 80px;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 14px;
+        }
+
+        .card {
+          padding: 18px;
+          border-radius: 20px;
+        }
+
+        .metric {
+          font-size: 28px;
+        }
+
+        .chart-card {
+          padding: 20px;
+        }
+
+        .chart-card h2 {
+          font-size: 17px;
+          margin-bottom: 16px;
+        }
+
+        .table-card {
+          padding: 20px;
+        }
+
+        .table-card h2 {
+          font-size: 17px;
+        }
+
+        table {
+          min-width: 520px;
+        }
+
+        .sources-card {
+          padding: 20px;
+        }
+
+        .sources-card h2 {
+          font-size: 17px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .stats-grid {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -654,7 +790,7 @@
 
             <div class="user">
               <div class="avatar"></div>
-              <span>comms@acme-corp.com</span>
+              <span>ejemplo@mvp.com</span>
             </div>
           </div>
         </div>
@@ -728,49 +864,51 @@
         <section class="table-card" id="actividad-reciente">
           <h2 style="margin-bottom: 22px">Actividad reciente</h2>
 
-          <table>
-            <thead>
-              <tr>
-                <th>Contenido</th>
-                <th>Estado</th>
-                <th>Confianza</th>
-                <th>Fecha</th>
-              </tr>
-            </thead>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Contenido</th>
+                  <th>Estado</th>
+                  <th>Confianza</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr>
-                <td>Tweet viral: "CEO dimite tras escándalo financiero"</td>
-                <td><span class="status danger">Desinformación</span></td>
-                <td>96%</td>
-                <td>Hace 18 min</td>
-              </tr>
-              <tr>
-                <td>Comunicado de prensa — resultados Q2 2026</td>
-                <td><span class="status verified">Verificado</span></td>
-                <td>99%</td>
-                <td>Hace 1h</td>
-              </tr>
-              <tr>
-                <td>Video en TikTok sobre retiro de producto</td>
-                <td><span class="status warning">Manipulado</span></td>
-                <td>88%</td>
-                <td>Hace 3h</td>
-              </tr>
-              <tr>
-                <td>Artículo: fusión con competidor confirmada</td>
-                <td><span class="status verified">Verificado</span></td>
-                <td>94%</td>
-                <td>Hace 5h</td>
-              </tr>
-              <tr>
-                <td>Hilo de Reddit — supuesta filtración interna</td>
-                <td><span class="status danger">Generado por IA</span></td>
-                <td>91%</td>
-                <td>Hace 1 día</td>
-              </tr>
-            </tbody>
-          </table>
+              <tbody>
+                <tr>
+                  <td>Tweet viral: "CEO dimite tras escándalo financiero"</td>
+                  <td><span class="status danger">Desinformación</span></td>
+                  <td>96%</td>
+                  <td>Hace 18 min</td>
+                </tr>
+                <tr>
+                  <td>Comunicado de prensa — resultados Q2 2026</td>
+                  <td><span class="status verified">Verificado</span></td>
+                  <td>99%</td>
+                  <td>Hace 1h</td>
+                </tr>
+                <tr>
+                  <td>Video en TikTok sobre retiro de producto</td>
+                  <td><span class="status warning">Manipulado</span></td>
+                  <td>88%</td>
+                  <td>Hace 3h</td>
+                </tr>
+                <tr>
+                  <td>Artículo: fusión con competidor confirmada</td>
+                  <td><span class="status verified">Verificado</span></td>
+                  <td>94%</td>
+                  <td>Hace 5h</td>
+                </tr>
+                <tr>
+                  <td>Hilo de Reddit — supuesta filtración interna</td>
+                  <td><span class="status danger">Generado por IA</span></td>
+                  <td>91%</td>
+                  <td>Hace 1 día</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
 
         <!-- TOP FUENTES -->
@@ -845,6 +983,28 @@
         </section>
       </main>
     </div>
+
+    <!-- MOBILE BOTTOM NAV -->
+    <nav class="mobile-nav">
+      <div class="mobile-nav-links">
+        <a href="#" class="active">
+          <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          Dashboard
+        </a>
+        <a href="#actividad-reciente">
+          <svg viewBox="0 0 24 24"><path d="M13 2.05V4.07c3.94.49 7 3.85 7 7.93 0 3.21-1.81 6.04-4.5 7.56L13 17v5h5l-1.75-1.75C18.78 18.38 21 15.31 21 12c0-5.18-3.95-9.45-9-9.95M11 2.05C5.95 2.55 2 6.82 2 12c0 3.31 2.22 6.38 4.75 8.25L5 22h5v-5l-2.56 2.56C5.81 18.04 4 15.21 4 12c0-4.08 3.06-7.44 7-7.93V2.05z"/></svg>
+          Actividad
+        </a>
+        <a href="#">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+          Alertas
+        </a>
+        <a href="index.html">
+          <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+          Salir
+        </a>
+      </div>
+    </nav>
 
     <script>
       // BELL DROPDOWN
