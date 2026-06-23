@@ -255,8 +255,12 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: linear-gradient(135deg, rgba(184,33,58,0.10) 0%, rgba(184,33,58,0.04) 100%);
-        border: 1px solid rgba(184,33,58,0.30);
+        background: linear-gradient(
+          135deg,
+          rgba(184, 33, 58, 0.1) 0%,
+          rgba(184, 33, 58, 0.04) 100%
+        );
+        border: 1px solid rgba(184, 33, 58, 0.3);
         color: var(--red);
         font-family: var(--sans);
         font-size: 0.88rem;
@@ -267,7 +271,7 @@
         letter-spacing: 0.04em;
         text-transform: uppercase;
         backdrop-filter: blur(8px);
-        box-shadow: 0 2px 12px rgba(184,33,58,0.10);
+        box-shadow: 0 2px 12px rgba(184, 33, 58, 0.1);
         animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.95s both;
       }
 
@@ -833,7 +837,7 @@
 
       .price-amount {
         font-family: var(--sans);
-        font-size: 4.5rem;
+        font-size: 4rem;
         font-weight: 900;
         color: var(--text);
         line-height: 1;
@@ -857,7 +861,7 @@
         color: rgba(255, 255, 255, 0.75);
       }
 
-.price-period {
+      .price-period {
         font-size: 0.82rem;
         color: var(--muted);
         margin-bottom: 28px;
@@ -1384,9 +1388,7 @@
 
       <div class="hero-content">
         <h1>checkmate</h1>
-        <div class="hero-badge">
-          El antivirus de información falsa
-        </div>
+        <div class="hero-badge">El antivirus de información falsa</div>
         <div class="hero-actions">
           <a href="dashboard.html" class="btn-hero">Empezar gratis</a>
           <a href="#como-funciona" class="btn-hero-ghost"
@@ -1400,7 +1402,9 @@
     <section id="problema" class="problem-section">
       <span class="section-eyebrow">el problema</span>
       <h2 class="section-title">
-        La verificación es lenta<br><span style="color: var(--red);">El daño, inmediato</span>
+        La verificación es lenta<br /><span style="color: var(--red)"
+          >El daño, inmediato</span
+        >
       </h2>
 
       <div class="problem-stats fade-up">
@@ -1411,17 +1415,23 @@
         </div>
         <div class="stat-card">
           <div class="stat-number">70%</div>
-          <div class="stat-label">más rápido se propagan las noticias falsas que las verdaderas</div>
+          <div class="stat-label">
+            más rápido se propagan las noticias falsas que las verdaderas
+          </div>
           <div class="stat-source">MIT — estudio sobre desinformación</div>
         </div>
         <div class="stat-card">
           <div class="stat-number">63%</div>
-          <div class="stat-label">de los consumidores compra a marcas en que confía</div>
+          <div class="stat-label">
+            de los consumidores compra a marcas en que confía
+          </div>
           <div class="stat-source">Edelman Trust Report</div>
         </div>
         <div class="stat-card">
           <div class="stat-number">80%+</div>
-          <div class="stat-label">necesita confiar en una marca antes de comprar</div>
+          <div class="stat-label">
+            necesita confiar en una marca antes de comprar
+          </div>
           <div class="stat-source">Edelman Trust Report</div>
         </div>
       </div>
@@ -1432,7 +1442,8 @@
       <span class="section-eyebrow">cómo funciona</span>
       <h2 class="section-title">Simple, rápido, definitivo</h2>
       <p class="section-sub">
-        Sin configuraciones complejas. En cuatro pasos tenés una respuesta clara.
+        Sin configuraciones complejas. En cuatro pasos tenés una respuesta
+        clara.
       </p>
 
       <div class="steps-grid fade-up">
@@ -1446,23 +1457,17 @@
         <div class="step">
           <div class="step-circle">2</div>
           <h3>Detección</h3>
-          <p>
-            Identifica contenido relacionado con la empresa 
-          </p>
+          <p>Identifica contenido relacionado con la empresa</p>
         </div>
         <div class="step">
           <div class="step-circle">3</div>
-          <h3>Scoring de riesgo </h3>
-          <p>
-            Analiza el contendio y asigna una probabilidad de veracidad
-          </p>
+          <h3>Scoring de riesgo</h3>
+          <p>Analiza el contendio y asigna una probabilidad de veracidad</p>
         </div>
         <div class="step">
           <div class="step-circle">4</div>
           <h3>Alerta</h3>
-          <p>
-            Notifica amenazas para actuar antes de que se viralicen
-          </p>
+          <p>Notifica amenazas para actuar antes de que se viralicen</p>
         </div>
       </div>
     </section>
@@ -1581,9 +1586,17 @@
           <div class="price-divider"></div>
           <ul class="price-features">
             <li><span class="check">✓</span> Monitoreo horario 24/7</li>
-            <li><span class="check">✓</span> Cobertura de redes sociales y portales de noticias</li>
-            <li><span class="check">✓</span> Análisis estadísticos generales de reputación</li>
-            <li><span class="check">✓</span> Análisis histórico de reputación</li>
+            <li>
+              <span class="check">✓</span> Cobertura de redes sociales y
+              portales de noticias
+            </li>
+            <li>
+              <span class="check">✓</span> Análisis estadísticos generales de
+              reputación
+            </li>
+            <li>
+              <span class="check">✓</span> Análisis histórico de reputación
+            </li>
           </ul>
           <a href="dashboard.html" class="btn-plan">Empezar ahora</a>
         </div>
@@ -1591,19 +1604,23 @@
         <!-- ENTERPRISE -->
         <div class="price-card">
           <div class="price-tier">Enterprise</div>
-          <div class="price-amount">
-            A medida
-          </div>
+          <div class="price-amount">A medida</div>
           <div class="price-period">plan personalizado</div>
           <div class="price-divider"></div>
           <ul class="price-features">
             <li><span class="check">✓</span> Todo lo del plan Business</li>
             <li><span class="check">✓</span> Monitoreo en tiempo real</li>
-            <li><span class="check">✓</span> Mayor cantidad de fuentes a elección</li>
-            <li><span class="check">✓</span> Análisis específicos según necesidad</li>
+            <li>
+              <span class="check">✓</span> Mayor cantidad de fuentes a elección
+            </li>
+            <li>
+              <span class="check">✓</span> Análisis específicos según necesidad
+            </li>
             <li><span class="check">✓</span> Soporte dedicado 24/7</li>
           </ul>
-          <a href="mailto:ventas@checkmate.ai" class="btn-plan">Hablar con ventas</a>
+          <a href="mailto:ventas@checkmate.ai" class="btn-plan"
+            >Hablar con ventas</a
+          >
         </div>
       </div>
     </section>
@@ -1631,12 +1648,10 @@
         <div class="footer-brand">
           <div class="footer-logo">
             <img src="pieza-ajedrez.png" alt="Chess Logo" />
-            <span>CheckMate</span>
+            <span>Checkmate</span>
           </div>
 
-          <p class="footer-description">
-            El antivirus de información falsa.
-          </p>
+          <p class="footer-description">El antivirus de información falsa.</p>
         </div>
 
         <!-- Columna -->
@@ -1662,7 +1677,7 @@
       </div>
       <!-- Bottom -->
       <div class="footer-bottom">
-        © 2026 CheckMate. Todos los derechos reservados.
+        © 2026 Checkmate. Todos los derechos reservados.
       </div>
     </footer>
 
